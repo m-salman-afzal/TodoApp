@@ -13,6 +13,7 @@ const itemSchema = sequelize.define(
     userId: {
       type: Sequelize.CHAR,
       allowNull: false,
+
       references: {
         model: 'users',
         key: 'userId',
