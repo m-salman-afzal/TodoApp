@@ -1,4 +1,4 @@
-import { AppError } from '../../Utils/AppError.js';
+import { AppError } from '../../../Utils/AppError.js';
 
 const restricTo = (...roles) => {
   return (req, res, next) => {

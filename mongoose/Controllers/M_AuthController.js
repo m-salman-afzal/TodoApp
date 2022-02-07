@@ -1,4 +1,4 @@
-import { userSchema } from '../../Models/M_UserModels.js';
+import { userSchema } from '../../Models/UserModels.js';
 import { AppError } from '../../Utils/AppError.js';
 import { catchAsync } from '../../Utils/CatchAsync.js';
 

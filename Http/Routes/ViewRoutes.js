@@ -1,8 +1,8 @@
-import express from 'express';
-import * as viewController from '../Controllers/ViewController.js';
+// import express from 'express';
+// import * as viewController from '../Controllers/ViewController.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-router.route('/').get(viewController.getBase);
+// router.route('/').get(viewController.getBase);
 
-export { router };
+// export { router };
