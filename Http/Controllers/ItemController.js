@@ -1,10 +1,11 @@
-import { itemSchema } from '../../Models/M_ItemModels.js';
+import { itemSchema } from '../../Models/ItemModels.js';
 import { AppError } from '../../Utils/AppError.js';
 import { catchAsync } from '../../Utils/CatchAsync.js';
-import { M_ApiFeatures } from '../../Utils/M_ApiFeatures.js';
 import { Pagination } from '../../Utils/Pagination.js';
 
 import { v1 as uuidv1 } from 'uuid';
+
+// * Define a common response for all request methods
 const response = (req, res, statusCode, status, message, item) => {
   return res.status(statusCode).json({
     status: status,
@@ -15,7 +16,8 @@ const response = (req, res, statusCode, status, message, item) => {
     },
   });
 };
-class M_ItemController {
+
+class ItemController {
   createItem = catchAsync(async (req, res, next) => {
     req.body.itemId = uuidv1();
     req.body.userId = req.session.user.userId;
@@ -92,7 +94,6 @@ class M_ItemController {
       fields = ['title', 'priority', 'description', 'dueDate'];
     }
     const offset = new Pagination(req.query.limit, req.query.page).skip();
-    console.log(offset);
     const allItems = await itemSchema.findAll({
       where: {
         userId: req.session.user.userId,
@@ -107,4 +108,4 @@ class M_ItemController {
   });
 }
 
-export default new M_ItemController();
+export default new ItemController();

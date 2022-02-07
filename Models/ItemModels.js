@@ -1,35 +1,53 @@
-import mongoose from 'mongoose';
+import Sequelize from 'sequelize';
+import { sequelize } from '../mysql_db.js';
 
-// * Init a Schema
-const itemSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-  },
-  title: {
-    type: String,
-    required: [true, 'A Todo item must have a Title'],
-    maxlength: [50, 'Length of Title must be less than 50 Characters'],
-    minlength: [8, 'Length of Title must be greater than 8 Characters'],
-    trim: true,
-  },
-  priority: {
-    type: String,
-    enum: {
-      values: ['low', 'medium', 'high'],
-      message: 'Priority must be low, medium or high.',
+const itemSchema = sequelize.define(
+  'items',
+  {
+    itemId: {
+      type: Sequelize.CHAR,
+      primaryKey: true,
+      allowNull: false,
+      unique: true,
     },
-    default: 'low',
-    trim: true,
+    userId: {
+      type: Sequelize.CHAR,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'userId',
+      },
+    },
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [8, 50],
+          msg: 'Title length must be between 8-50 characters',
+        },
+      },
+    },
+    priority: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['low', 'medium', 'high']],
+          msg: 'Priorities can only be low, medium or high',
+        },
+      },
+    },
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    dueDate: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
   },
-  description: {
-    type: String,
-    trim: true,
-  },
-  dueDate: {
-    type: Date,
-  },
-});
+  { fields: ['title', 'priority', 'description', 'dueDate'] }
+);
 
-const Item = mongoose.model('Item', itemSchema);
-
-export { Item };
+export { itemSchema };
