@@ -5,7 +5,14 @@ import { catchAsync } from '../../Utils/CatchAsync';
 import { v1 as uuidv1 } from 'uuid';
 
 // * Define a common response for all request methods
-const response = (req, res, statusCode, status, message, item) => {
+const response = (
+  req,
+  res,
+  statusCode: number,
+  status: string,
+  message: string,
+  item
+) => {
   return res.status(statusCode).json({
     status: status,
     message: message,
@@ -17,7 +24,7 @@ const response = (req, res, statusCode, status, message, item) => {
   });
 };
 
-class M_AuthController {
+class AuthController {
   signUp = catchAsync(async (req, res, next) => {
     req.body.userId = uuidv1();
     const user = await userSchema.create(req.body);
@@ -48,4 +55,4 @@ class M_AuthController {
   });
 }
 
-export default new M_AuthController();
+export default new AuthController();

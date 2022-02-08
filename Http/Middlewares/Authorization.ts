@@ -1,7 +1,7 @@
 import { AppError } from '../../Utils/AppError';
 
 class Authorization {
-  restricTo = (...roles) => {
+  restricTo = (...roles: string[]) => {
     return (req, res, next) => {
       // * check if the user has correct role to perform operation
       if (!roles.includes(req.session.user.role)) {
