@@ -8,7 +8,7 @@ import { router as userRouter } from './Routes/UserRoutes';
 import { AppError } from '../Utils/AppError';
 
 // * Init Express server
-const app = express();
+const app: express.Application = express();
 
 app.set('view engine', 'pug');
 app.set('views', './views');
