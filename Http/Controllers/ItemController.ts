@@ -137,7 +137,7 @@ class ItemController {
         },
         order: [['itemId', 'ASC']],
         offset: offset,
-        limit: req.query.limit,
+        limit: +req.query.limit,
         attributes: fields,
       });
 
