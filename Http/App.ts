@@ -5,7 +5,6 @@ import cookieSession from 'cookie-session';
 import { routeError } from './Controllers/ErrorController';
 import { router as itemRouter } from './Routes/ItemRoutes';
 import { router as userRouter } from './Routes/UserRoutes';
-// import { router as viewRouter } from './Routes/ViewRoutes.js';
 import { AppError } from '../Utils/AppError';
 
 // * Init Express server
