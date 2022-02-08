@@ -1,7 +1,9 @@
 import express from 'express';
-import * as itemController from '../Controllers/ItemContoller.js';
-import * as authentication from '../Middlewares/Authentication.js';
-import * as authorization from '../Middlewares/Authorization.js';
+
+import itemController from '../Controllers/ItemController';
+import authentication from '../Middlewares/Authentication';
+import authorization from '../Middlewares/Authorization';
+
 const router = express.Router();
 
 router
@@ -14,6 +16,10 @@ router
   .route('/:id')
   .get(itemController.readItem)
   .patch(itemController.updateItem)
-  .delete(authorization.restricTo('admin'), itemController.deleteItem);
+  .delete(
+    authentication.protect,
+    authorization.restricTo('admin', 'user'),
+    itemController.deleteItem
+  );
 
 export { router };

@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { app } from './Http/App.js';
+import { app } from './Http/App';
 import Sequelize from 'sequelize';
-import { sequelize } from './mysql_db.js';
+import { sequelize } from './mysql_db';
 
 // dotenv.config({ path: 'config.env' });
 
@@ -32,7 +32,7 @@ const ip = process.env.IP || '127.0.0.1';
 
 const port = process.env.PORT || 8000;
 
-const server = app.listen(port, ip, () => {
+const server = app.listen(8000, ip, () => {
   console.log(`
 -----------------------------
  Listening to ${ip}:${port}

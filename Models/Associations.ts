@@ -1,5 +1,5 @@
-import { userSchema } from './UserModels.js';
-import { itemSchema } from './ItemModels.js';
+import { userSchema } from './UserModels';
+import { itemSchema } from './ItemModels';
 
 userSchema.hasMany(itemSchema, {
   onDelete: 'CASCADE',

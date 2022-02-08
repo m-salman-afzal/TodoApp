@@ -2,11 +2,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieSession from 'cookie-session';
 
-import { routeError } from './Controllers/ErrorController.js';
-import { router as itemRouter } from './Http/Routes/ItemRoutes.js';
-import { router as userRouter } from './Http/Routes/UserRoutes.js';
-import { router as viewRouter } from './Http/Routes/ViewRoutes.js';
-import { AppError } from '../Utils/AppError.js';
+import { routeError } from './Controllers/ErrorController';
+import { router as itemRouter } from './Routes/ItemRoutes';
+import { router as userRouter } from './Routes/UserRoutes';
+// import { router as viewRouter } from './Routes/ViewRoutes.js';
+import { AppError } from '../Utils/AppError';
 
 // * Init Express server
 const app = express();
@@ -38,6 +38,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // * Define main routes which are then extended with queries and Ids
+// app.use('/', viewRouter);
 app.use('/todoApi/items', itemRouter);
 app.use('/todoApi/users', userRouter);
 

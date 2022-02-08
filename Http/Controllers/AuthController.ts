@@ -1,9 +1,10 @@
-import { userSchema } from '../../Models/UserModels.js';
-import { AppError } from '../../Utils/AppError.js';
-import { catchAsync } from '../../Utils/CatchAsync.js';
+import { userSchema } from '../../Models/UserModels';
+import { AppError } from '../../Utils/AppError';
+import { catchAsync } from '../../Utils/CatchAsync';
 
 import { v1 as uuidv1 } from 'uuid';
-// * Added some comments
+
+// * Define a common response for all request methods
 const response = (req, res, statusCode, status, message, item) => {
   return res.status(statusCode).json({
     status: status,
@@ -15,6 +16,7 @@ const response = (req, res, statusCode, status, message, item) => {
     },
   });
 };
+
 class M_AuthController {
   signUp = catchAsync(async (req, res, next) => {
     req.body.userId = uuidv1();
@@ -30,7 +32,7 @@ class M_AuthController {
     }
 
     // * check if the user has entered correct email and password
-    const user = await userSchema.findOne({
+    const user: any = await userSchema.findOne({
       where: { email: email },
     });
 

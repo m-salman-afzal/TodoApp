@@ -1,4 +1,4 @@
-import { AppError } from '../../Utils/AppError.js';
+import { AppError } from '../../Utils/AppError';
 
 class Authorization {
   restricTo = (...roles) => {

@@ -1,7 +1,7 @@
-import { userSchema } from '../../Models/UserModels.js';
-import { AppError } from '../../Utils/AppError.js';
-import { catchAsync } from '../../Utils/CatchAsync.js';
-import { Pagination } from '../../Utils/Pagination.js';
+import { userSchema } from '../../Models/UserModels';
+import { AppError } from '../../Utils/AppError';
+import { catchAsync } from '../../Utils/CatchAsync';
+import { Pagination } from '../../Utils/Pagination';
 
 import { v1 as uuidv1 } from 'uuid';
 
