@@ -6,7 +6,14 @@ import { Pagination } from '../../Utils/Pagination';
 import { v1 as uuidv1 } from 'uuid';
 
 // * Define a common response for all request methods
-const response = (req, res, statusCode, status, message, item) => {
+const response = (
+  req,
+  res,
+  statusCode: number,
+  status: string,
+  message: string,
+  item
+) => {
   return res.status(statusCode).json({
     status: status,
     message: message,
@@ -83,7 +90,6 @@ class UserController {
 
     // const item = await features.query;
     // console.log(item);
-    console.log(req.session);
     let fields = [];
     // const page = req.query.page * 1 || 1;
     // const limit = req.query.limit * 1 || 1;

@@ -66,7 +66,7 @@ const userSchema = sequelize.define('users', {
     type: Sequelize.VIRTUAL,
     allowNull: false,
     validate: {
-      isSame(el) {
+      isSame(el: string) {
         if (el !== this.password) throw new Error('Passwords are not same!');
       },
     },
@@ -90,8 +90,8 @@ const userSchema = sequelize.define('users', {
 
 // * Password check with DB for login
 userSchema.prototype.correctPassword = async (
-  candidatePassword,
-  userPassword
+  candidatePassword: string,
+  userPassword: string
 ) => {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
