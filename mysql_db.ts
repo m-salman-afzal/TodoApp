@@ -1,7 +1,8 @@
+import sequelize from 'sequelize';
 import { Sequelize } from 'sequelize';
 import { config } from './config';
 
-const sequelize = new Sequelize(
+const sequel: Sequelize = new Sequelize(
   config.DB_MYSQL_NAME,
   config.DB_MYSQL_USERNAME,
   config.DB_MYSQL_PASSWORD,
@@ -11,4 +12,4 @@ const sequelize = new Sequelize(
   }
 );
 
-export { sequelize };
+export { sequel };

@@ -1,4 +1,4 @@
-import { itemSchema } from '../../Models/ItemModels';
+import { Item } from '../../Models/Associations';
 import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
 import { Pagination } from '../../Utils/Pagination';
@@ -34,7 +34,7 @@ class ItemController {
     ) => {
       req.body.itemId = uuidv1();
       req.body.userId = req.session.user.userId;
-      const newItem = await itemSchema.create(req.body);
+      const newItem = await Item.create(req.body);
       response(req, res, 201, 'Created', 'Success', newItem);
     }
   );
@@ -45,7 +45,7 @@ class ItemController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const item = await itemSchema.findOne({
+      const item = await Item.findOne({
         where: { itemId: req.params.id, userId: req.session.user.userId },
       });
 
@@ -68,7 +68,7 @@ class ItemController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const isUpdated = await itemSchema.update(req.body, {
+      const isUpdated = await Item.update(req.body, {
         where: { itemId: req.params.id, userId: req.session.user.userId },
       });
 
@@ -81,7 +81,7 @@ class ItemController {
           )
         );
 
-      const item = await itemSchema.findByPk(req.params.id);
+      const item = await Item.findByPk(req.params.id);
 
       response(req, res, 200, 'Ok', 'Success', item);
     }
@@ -93,7 +93,7 @@ class ItemController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const item = await itemSchema.destroy({
+      const item = await Item.destroy({
         where: { itemId: req.params.id, userId: req.session.user.userId },
       });
 
@@ -116,7 +116,7 @@ class ItemController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // const features = new M_ApiFeatures(itemSchema, req).sort().paginate();
+      // const features = new M_ApiFeatures(Item, req).sort().paginate();
       // .filter();
 
       // const item = await features.query;
@@ -131,7 +131,7 @@ class ItemController {
         fields = ['title', 'priority', 'description', 'dueDate'];
       }
       const offset = new Pagination(+req.query.limit, +req.query.page).skip();
-      const allItems = await itemSchema.findAll({
+      const allItems = await Item.findAll({
         where: {
           userId: req.session.user.userId,
         },

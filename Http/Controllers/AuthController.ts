@@ -1,4 +1,4 @@
-import { userSchema } from '../../Models/UserModels';
+import { User } from '../../Models/Associations';
 import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
 
@@ -33,7 +33,9 @@ class AuthController {
       next: express.NextFunction
     ) => {
       req.body.userId = uuidv1();
-      const user = await userSchema.create(req.body);
+
+      const user = await User.create(req.body);
+      console.log(user);
       response(req, res, 201, 'Created', 'Success', user);
     }
   );
@@ -51,15 +53,15 @@ class AuthController {
       }
 
       // * check if the user has entered correct email and password
-      const user: any = await userSchema.findOne({
+      const user: any = await User.findOne({
         where: { email: email },
       });
 
-      if (!user || !(await user.correctPassword(password, user.password))) {
-        return next(
-          new AppError('Email or Password is Wrong! Try Again.', 404)
-        );
-      }
+      // if (!user || !(await user.correctPassword(password, user.password))) {
+      //   return next(
+      //     new AppError('Email or Password is Wrong! Try Again.', 404)
+      //   );
+      // }
 
       // * Set the session-cookie
       req.session.isAuth = true;

@@ -1,6 +1,6 @@
 import { catchAsync } from '../../Utils/CatchAsync';
 import { AppError } from '../../Utils/AppError';
-import { userSchema } from '../../Models/UserModels';
+import { User } from '../../Models/Associations';
 
 class Authentication {
   protect = catchAsync(async (req, res, next) => {
@@ -12,7 +12,7 @@ class Authentication {
     }
 
     // * check if the user still exists in our database
-    const currentUser = await userSchema.findByPk(req.session.user.userId);
+    const currentUser = await User.findByPk(req.session.user.userId);
     console.log(currentUser);
     if (!currentUser) {
       return next(

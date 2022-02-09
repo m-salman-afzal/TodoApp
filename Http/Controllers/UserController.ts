@@ -1,4 +1,4 @@
-import { userSchema } from '../../Models/UserModels';
+import { User } from '../../Models/Associations';
 import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
 import { Pagination } from '../../Utils/Pagination';
@@ -27,12 +27,12 @@ const response = (
 class UserController {
   createUser = catchAsync(async (req, res, next) => {
     req.body.userId = uuidv1();
-    const newUser = await userSchema.create(req.body);
+    const newUser = await User.create(req.body);
     response(req, res, 201, 'Created', 'Success', newUser);
   });
 
   readUser = catchAsync(async (req, res, next) => {
-    const user = await userSchema.findOne({
+    const user = await User.findOne({
       where: { userId: req.params.id },
     });
 
@@ -49,7 +49,7 @@ class UserController {
   });
 
   updateUser = catchAsync(async (req, res, next) => {
-    const isUpdated = await userSchema.update(req.body, {
+    const isUpdated = await User.update(req.body, {
       where: { userId: req.params.id },
     });
 
@@ -62,13 +62,13 @@ class UserController {
         )
       );
 
-    const user = await userSchema.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id);
 
     response(req, res, 200, 'Ok', 'Success', user);
   });
 
   deleteUser = catchAsync(async (req, res, next) => {
-    const user = await userSchema.destroy({
+    const user = await User.destroy({
       where: { userId: req.params.id },
     });
 
@@ -100,7 +100,7 @@ class UserController {
       fields = ['name', 'userName', 'email'];
     }
     const offset = new Pagination(req.query.limit, req.query.page).skip();
-    const allUsers = await userSchema.findAll({
+    const allUsers = await User.findAll({
       order: [['userId', 'ASC']],
       offset: offset,
       limit: req.query.limit * 1 || 1,

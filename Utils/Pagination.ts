@@ -1,4 +1,6 @@
-class Pagination {
+import { pagination_I } from '../interfaces';
+
+class Pagination implements pagination_I {
   private perPage: number = 3;
   private page: number = 1;
 
