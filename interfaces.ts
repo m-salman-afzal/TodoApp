@@ -19,4 +19,19 @@ interface config_I {
 interface pagination_I {
   skip(): number;
 }
-export { config_I, pagination_I };
+
+interface itemFromDb_I {
+  title: string;
+  priority: string;
+  description: string;
+  dueDate: Date;
+}
+
+interface userFromDb_I {
+  name: string;
+  userName: string;
+  role: string;
+  email: string;
+}
+
+export { config_I, pagination_I, itemFromDb_I, userFromDb_I };
