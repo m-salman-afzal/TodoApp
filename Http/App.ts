@@ -37,7 +37,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // * Define main routes which are then extended with queries and Ids
-// app.use('/', viewRouter);
 app.use('/todoApi/items', itemRouter);
 app.use('/todoApi/users', userRouter);
 

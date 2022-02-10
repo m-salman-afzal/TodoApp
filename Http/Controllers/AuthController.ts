@@ -1,6 +1,7 @@
 import { User } from '../../Models/Associations';
 import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
+import { UserEntity } from '../../Domain/UserEntity';
 
 import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
@@ -32,11 +33,17 @@ class AuthController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      req.body.userId = uuidv1();
+      // * Utilize Entity
+      const userAPI = UserEntity.fromAPI(req);
+      userAPI.setUserId(uuidv1());
+      userAPI.setPassword(req.body.password);
+      userAPI.setPassword(req.body.passwordConfirm);
 
-      const user = await User.create(req.body);
-      console.log(user);
-      response(req, res, 201, 'Created', 'Success', user);
+      const newUser = await User.create(userAPI);
+
+      const userDB = UserEntity.fromDB(newUser);
+
+      response(req, res, 201, 'Created', 'Success', userDB);
     }
   );
 
@@ -51,10 +58,12 @@ class AuthController {
       if (!email || !password) {
         return next(new AppError('Email or Password not entered!', 404));
       }
+      // * Utilize Entity
+      const userAPI = UserEntity.fromAPI(req);
 
       // * check if the user has entered correct email and password
       const user: any = await User.findOne({
-        where: { email: email },
+        where: { email: userAPI.email },
       });
 
       // if (!user || !(await user.correctPassword(password, user.password))) {
@@ -67,7 +76,9 @@ class AuthController {
       req.session.isAuth = true;
       req.session.user = user;
 
-      response(req, res, 200, 'Ok', 'Success', user);
+      const userDB = UserEntity.fromDB(user);
+
+      response(req, res, 200, 'Ok', 'Success', userDB);
     }
   );
 }
