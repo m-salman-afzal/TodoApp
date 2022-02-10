@@ -1,7 +1,10 @@
-import { userSchema } from './UserModels';
-import { itemSchema } from './ItemModels';
+import { User } from './UserModels';
+import { Item } from './ItemModels';
 
-userSchema.hasMany(itemSchema, {
+User.hasMany(Item, {
+  sourceKey: 'userId',
   onDelete: 'CASCADE',
 });
-itemSchema.belongsTo(userSchema);
+Item.belongsTo(User, { targetKey: 'userId' });
+
+export { User, Item };
