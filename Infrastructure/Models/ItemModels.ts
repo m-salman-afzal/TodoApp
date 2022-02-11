@@ -1,5 +1,5 @@
 // import { Sequelize, Model, DataTypes } from 'sequelize';
-import { sequel } from '../mysql_db';
+import { sequel } from '../../mysql_db';
 import {
   Model,
   InferAttributes,

@@ -1,10 +1,14 @@
-import { User } from '../../Models/Associations';
-import { AppError } from '../../Utils/AppError';
-import { catchAsync } from '../../Utils/CatchAsync';
-import { UserEntity } from '../../Domain/UserEntity';
-
+// * Packages
 import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
+
+// * Error Handlers
+import { AppError } from '../../Utils/AppError';
+import { catchAsync } from '../../Utils/CatchAsync';
+
+// * DDD
+import { UserEntity } from '../../Domain/UserEntity';
+import { UserRepository } from '../../Infrastructure/Repositories/UserRepository';
 
 // * Define a common response for all request methods
 const response = (
@@ -37,9 +41,9 @@ class AuthController {
       const userAPI = UserEntity.fromAPI(req);
       userAPI.setUserId(uuidv1());
       userAPI.setPassword(req.body.password);
-      userAPI.setPassword(req.body.passwordConfirm);
+      userAPI.setPasswordConfirm(req.body.passwordConfirm);
 
-      const newUser = await User.create(userAPI);
+      const newUser = await UserRepository.createUser(userAPI);
 
       const userDB = UserEntity.fromDB(newUser);
 
@@ -62,9 +66,7 @@ class AuthController {
       const userAPI = UserEntity.fromAPI(req);
 
       // * check if the user has entered correct email and password
-      const user: any = await User.findOne({
-        where: { email: userAPI.email },
-      });
+      const user: any = await UserRepository.readUser(undefined, userAPI.email);
 
       // if (!user || !(await user.correctPassword(password, user.password))) {
       //   return next(

@@ -1,6 +1,6 @@
 import { catchAsync } from '../../Utils/CatchAsync';
 import { AppError } from '../../Utils/AppError';
-import { User } from '../../Models/Associations';
+import { User } from '../../Infrastructure/Models/Associations';
 
 class Authentication {
   protect = catchAsync(async (req, res, next) => {

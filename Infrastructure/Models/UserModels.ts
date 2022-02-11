@@ -1,4 +1,4 @@
-import { sequel } from '../mysql_db';
+import { sequel } from '../../mysql_db';
 import {
   Model,
   InferAttributes,
