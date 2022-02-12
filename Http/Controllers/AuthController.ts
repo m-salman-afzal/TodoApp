@@ -8,7 +8,7 @@ import { catchAsync } from '../../Utils/CatchAsync';
 
 // * DDD
 import { UserEntity } from '../../Domain/UserEntity';
-import { UserRepository } from '../../Infrastructure/Repositories/UserRepository';
+import UserRepository from '../../Infrastructure/Repositories/UserRepository';
 
 // * Define a common response for all request methods
 const response = (
@@ -66,7 +66,7 @@ class AuthController {
       const userAPI = UserEntity.fromAPI(req);
 
       // * check if the user has entered correct email and password
-      const user: any = await UserRepository.readUser(undefined, userAPI.email);
+      const user = await UserRepository.readUser(undefined, userAPI.email);
 
       // if (!user || !(await user.correctPassword(password, user.password))) {
       //   return next(

@@ -11,7 +11,7 @@ import { Pagination } from '../../Utils/Pagination';
 
 // * DDD
 import { UserEntity } from '../../Domain/UserEntity';
-import { UserRepository } from '../../Infrastructure/Repositories/UserRepository';
+import UserRepository from '../../Infrastructure/Repositories/UserRepository';
 
 // * Define a common response for all request methods
 const response = (

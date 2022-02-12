@@ -11,7 +11,7 @@ import { Pagination } from '../../Utils/Pagination';
 
 // * DDD
 import { ItemEntity } from '../../Domain/ItemEntity';
-import { ItemRepository } from '../../Infrastructure/Repositories/ItemRepository';
+import ItemRepository from '../../Infrastructure/Repositories/ItemRepository';
 
 // * Define a common response for all request methods
 const response = (
@@ -146,6 +146,7 @@ class ItemController {
         itemAPI.itemId,
         itemAPI.userId
       );
+      console.log(item);
 
       // * If no item found with id
       if (!item)
