@@ -1,11 +1,17 @@
-import { User } from '../../Models/Associations';
+// * Packages
+import express from 'express';
+import { v1 as uuidv1 } from 'uuid';
+
+// * Error Handlers
 import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
-import { Pagination } from '../../Utils/Pagination';
-import { UserEntity } from '../../Domain/UserEntity';
-import express from 'express';
 
-import { v1 as uuidv1 } from 'uuid';
+// * Utils
+import { Pagination } from '../../Utils/Pagination';
+
+// * DDD
+import { UserEntity } from '../../Domain/UserEntity';
+import UserRepository from '../../Infrastructure/Repositories/UserRepository';
 
 // * Define a common response for all request methods
 const response = (
@@ -37,9 +43,10 @@ class UserController {
       const userAPI = UserEntity.fromAPI(req);
       userAPI.setUserId(uuidv1());
       userAPI.setPassword(req.body.password);
-      userAPI.setPassword(req.body.passwordConfirm);
+      userAPI.setPasswordConfirm(req.body.passwordConfirm);
 
-      const newUser = await User.create(userAPI);
+      // * Utilize Repository
+      const newUser = await UserRepository.createUser(userAPI);
 
       const userDB = UserEntity.fromDB(newUser);
 
@@ -55,11 +62,10 @@ class UserController {
     ) => {
       // * Utilize Entity
       const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(req.session.user.userId);
+      userAPI.setUserId(req.params.id);
 
-      const user = await User.findOne({
-        where: { userId: userAPI.userId },
-      });
+      // * Utilize Repository
+      const user = await UserRepository.readUser(userAPI.userId);
 
       // * If no item found with id
       if (!user)
@@ -86,9 +92,11 @@ class UserController {
       const userAPI = UserEntity.fromAPI(req);
       userAPI.setUserId(req.params.id);
 
-      const isUpdated = await User.update(userAPI, {
-        where: { userId: userAPI.userId },
-      });
+      // * Utilize Repository
+      const isUpdated = await UserRepository.updateUser(
+        userAPI,
+        userAPI.userId
+      );
 
       // * If no item found with id
       if (isUpdated[0] === 0)
@@ -99,7 +107,7 @@ class UserController {
           )
         );
 
-      const user = await User.findByPk(userAPI.userId);
+      const user = await UserRepository.readUser(userAPI.userId);
       const userDB = UserEntity.fromDB(user);
 
       response(req, res, 200, 'Ok', 'Success', userDB);
@@ -116,9 +124,8 @@ class UserController {
       const userAPI = UserEntity.fromAPI(req);
       userAPI.setUserId(req.params.id);
 
-      const user = await User.destroy({
-        where: { userId: userAPI.userId },
-      });
+      // * Utilize Repository
+      const user = await UserRepository.deleteUser(userAPI.userId);
 
       // * If no item found with id
       if (!user)
@@ -143,7 +150,8 @@ class UserController {
       const userAPI = UserEntity.fromAPI(req);
       userAPI.setUserId(req.params.id);
 
-      const allUsers = await User.findAll();
+      // * Utilize Repository
+      const allUsers = await UserRepository.readAllUser();
 
       const userDB = allUsers.map((el) => {
         return UserEntity.fromDB(el);

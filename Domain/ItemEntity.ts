@@ -52,7 +52,7 @@ class ItemEntity {
   }
 
   // * Returns the current object
-  public static fromObj() {
+  fromObj() {
     return JSON.parse(JSON.stringify(this));
   }
 }

@@ -1,11 +1,17 @@
-import { Item } from '../../Models/Associations';
-import { AppError } from '../../Utils/AppError';
-import { catchAsync } from '../../Utils/CatchAsync';
-import { Pagination } from '../../Utils/Pagination';
-import { ItemEntity } from '../../Domain/ItemEntity';
-
+// * packages
 import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
+
+// * Error Handlers
+import { AppError } from '../../Utils/AppError';
+import { catchAsync } from '../../Utils/CatchAsync';
+
+// * Utils
+import { Pagination } from '../../Utils/Pagination';
+
+// * DDD
+import { ItemEntity } from '../../Domain/ItemEntity';
+import ItemRepository from '../../Infrastructure/Repositories/ItemRepository';
 
 // * Define a common response for all request methods
 const response = (
@@ -46,8 +52,12 @@ class ItemController {
       itemAPI.setItemId(uuidv1());
       itemAPI.setUserId(req.session.user.userId);
 
-      const newItem = await Item.create(itemAPI);
-      response(req, res, 201, 'Created', 'Success', newItem);
+      // * Utilize Repository
+      const newItem = await ItemRepository.createItem(itemAPI);
+
+      const itemDB = ItemEntity.fromDB(newItem);
+
+      response(req, res, 201, 'Created', 'Success', itemDB);
     }
   );
 
@@ -62,9 +72,11 @@ class ItemController {
       itemAPI.setItemId(req.params.id);
       itemAPI.setUserId(req.session.user.userId);
 
-      const item = await Item.findOne({
-        where: { itemId: itemAPI.itemId, userId: itemAPI.userId },
-      });
+      // * Utilize Repository
+      const item = await ItemRepository.readItem(
+        itemAPI.itemId,
+        itemAPI.userId
+      );
 
       // * If no item found with id
       if (!item)
@@ -92,9 +104,12 @@ class ItemController {
       itemAPI.setItemId(req.params.id);
       itemAPI.setUserId(req.session.user.userId);
 
-      const isUpdated = await Item.update(itemAPI, {
-        where: { itemId: itemAPI.itemId, userId: itemAPI.userId },
-      });
+      // * Utilize Repository
+      const isUpdated = await ItemRepository.updateItem(
+        itemAPI,
+        itemAPI.itemId,
+        itemAPI.userId
+      );
 
       // * If no item found with id
       if (isUpdated[0] === 0)
@@ -105,7 +120,10 @@ class ItemController {
           )
         );
 
-      const item = await Item.findByPk(req.params.id);
+      const item = await ItemRepository.readItem(
+        itemAPI.itemId,
+        itemAPI.userId
+      );
       const itemDB = ItemEntity.fromDB(item);
 
       response(req, res, 200, 'Ok', 'Success', itemDB);
@@ -123,9 +141,12 @@ class ItemController {
       itemAPI.setItemId(req.params.id);
       itemAPI.setUserId(req.session.user.userId);
 
-      const item = await Item.destroy({
-        where: { itemId: itemAPI.itemId, userId: itemAPI.userId },
-      });
+      // * Utilize Repository
+      const item = await ItemRepository.deleteItem(
+        itemAPI.itemId,
+        itemAPI.userId
+      );
+      console.log(item);
 
       // * If no item found with id
       if (!item)
@@ -174,15 +195,13 @@ class ItemController {
       // itemAPI.setItemId(req.params.id);
       itemAPI.setUserId(req.session.user.userId);
 
-      const allItems = await Item.findAll({
-        where: { userId: itemAPI.userId },
-      });
+      const allItems = await ItemRepository.readAllItem(itemAPI.userId);
 
-      const items = allItems.map((el) => {
+      const itemDB = allItems.map((el) => {
         return ItemEntity.fromDB(el);
       });
 
-      response(req, res, 200, 'Ok', 'Success', items);
+      response(req, res, 200, 'Ok', 'Success', itemDB);
     }
   );
 }
