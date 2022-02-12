@@ -1,38 +1,23 @@
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import sequelize from 'sequelize';
+import { config } from './config';
 import { app } from './Http/App';
-import Sequelize from 'sequelize';
-import { sequelize } from './mysql_db';
+import { sequel } from './mysql_db';
 
-// dotenv.config({ path: 'config.env' });
-
-// * Connect to MongoDb Atlas
-// const DB = process.env.DATABASE.replace(
-//   '<PASSWORD>',
-//   process.env.DATABASE_PASSWORD
-// );
-
-sequelize
+sequel
   .sync()
-  .then((result) => {
+  .then(() => {
     console.log(
       '--------------------------------\n Sequelize Connection Successful\n--------------------------------'
     );
   })
-  .catch((err) => console.log(err));
-
-// mongoose.connect(DB, { useNewUrlParser: true }).then(() => {
-//   console.log(
-//     '--------------------------------\n Mongoose Connection Successful\n--------------------------------'
-//   );
-// });
+  .catch((err: sequelize.Error) => console.log(err));
 
 // * Connect to Node Server
-const ip = process.env.IP || '127.0.0.1';
+const ip: string = config.IP || '127.0.0.1';
 
-const port = process.env.PORT || 8000;
+const port: number = +config.PORT || 8000;
 
-const server = app.listen(8000, ip, () => {
+const server: object = app.listen(port, ip, () => {
   console.log(`
 -----------------------------
  Listening to ${ip}:${port}

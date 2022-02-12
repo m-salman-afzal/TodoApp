@@ -5,11 +5,10 @@ import cookieSession from 'cookie-session';
 import { routeError } from './Controllers/ErrorController';
 import { router as itemRouter } from './Routes/ItemRoutes';
 import { router as userRouter } from './Routes/UserRoutes';
-// import { router as viewRouter } from './Routes/ViewRoutes.js';
 import { AppError } from '../Utils/AppError';
 
 // * Init Express server
-const app = express();
+const app: express.Application = express();
 
 app.set('view engine', 'pug');
 app.set('views', './views');
@@ -38,7 +37,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // * Define main routes which are then extended with queries and Ids
-// app.use('/', viewRouter);
 app.use('/todoApi/items', itemRouter);
 app.use('/todoApi/users', userRouter);
 
