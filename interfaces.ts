@@ -1,4 +1,5 @@
 import sequelize from 'sequelize';
+import Pagination from './Utils/Pagination';
 
 interface config_I {
   readonly NODE_ENV: string;
@@ -16,7 +17,8 @@ interface config_I {
 }
 
 interface pagination_I {
-  skip(): number;
+  limit();
+  offset(): number;
 }
 
 interface itemFromDb_I {
@@ -38,7 +40,7 @@ interface itemRepository_I<inputType, outputType> {
   readItem(itemId: string, userId: string): Promise<outputType>;
   updateItem(item: inputType, itemId: string, userId: string): Promise<any>;
   deleteItem(itemId: string, userId: string): Promise<any>;
-  readAllItem(userId: string): Promise<any>;
+  readAllItem(userId: string, pagination: Pagination): Promise<any>;
 }
 
 interface userRepository_I<inputType, outputType> {

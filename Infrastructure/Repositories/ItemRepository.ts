@@ -1,6 +1,7 @@
 import { ItemEntity } from '../../Domain/ItemEntity';
 import { Item } from '../Models/Associations';
 import { itemRepository_I } from '../../interfaces';
+import Pagination from '../../Utils/Pagination';
 
 class ItemRepository implements itemRepository_I<ItemEntity, Item> {
   createItem = async (item: ItemEntity): Promise<Item> => {
@@ -29,9 +30,15 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
     });
   };
 
-  readAllItem = async (userId: string): Promise<Item[]> => {
+  readAllItem = async (
+    userId: string,
+    pagination: Pagination
+  ): Promise<Item[]> => {
+    console.log(pagination);
     return Item.findAll({
       where: { userId },
+      limit: pagination.limit(),
+      offset: pagination.offset(),
     });
   };
 }

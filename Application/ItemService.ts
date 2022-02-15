@@ -5,6 +5,9 @@ import express from 'express';
 // * Error Handlers
 import { AppError } from '../Utils/AppError';
 
+// * Utils
+import Pagination from '../Utils/Pagination';
+
 // * DDD
 import { ItemEntity } from '../Domain/ItemEntity';
 import ItemRepository from '../Infrastructure/Repositories/ItemRepository';
@@ -150,8 +153,13 @@ class ItemService {
     // itemAPI.setItemId(req.params.id);
     itemAPI.setUserId(req.session.user.userId);
 
+    const pagination = new Pagination(+req.query.limit, +req.query.page);
+
     // * Utilize Repository
-    const allItems = await ItemRepository.readAllItem(itemAPI.userId);
+    const allItems = await ItemRepository.readAllItem(
+      itemAPI.userId,
+      pagination
+    );
 
     // * Utilize Entity
     const itemDB = allItems.map((el) => {
