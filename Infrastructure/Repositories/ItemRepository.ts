@@ -39,8 +39,8 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
     });
     const paginationInfo = new PaginationInfo<Item>(
       pagination.limit(),
-      items.count,
       pagination.pageNo(),
+      items.count,
       items.rows
     );
 

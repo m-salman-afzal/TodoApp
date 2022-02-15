@@ -20,7 +20,6 @@ interface pagination_I {
   limit(): number;
   pageNo(): number;
   offset(): number;
-  end(): number;
 }
 
 interface itemFromDb_I {
@@ -50,7 +49,7 @@ interface userRepository_I<inputType, outputType> {
   readUser(userId: string, email: string): Promise<outputType>;
   updateUser(user: inputType, userId: string): Promise<any>;
   deleteUser(userId: string): Promise<any>;
-  readAllUser(): Promise<any>;
+  readAllUser(pagination: Pagination): Promise<any>;
 }
 
 export {

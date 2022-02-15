@@ -1,8 +1,8 @@
 import { pagination_I } from '../interfaces';
 
 class Pagination implements pagination_I {
-  protected perPage: number;
-  protected page: number;
+  private perPage: number;
+  private page: number;
 
   constructor(perPage: number, page: number) {
     this.perPage = perPage;
@@ -21,10 +21,6 @@ class Pagination implements pagination_I {
 
   offset(): number {
     return (this.page - 1) * this.perPage;
-  }
-
-  end(): number {
-    return this.page * this.perPage;
   }
 }
 

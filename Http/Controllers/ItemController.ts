@@ -16,6 +16,7 @@ const response = (
   message: string,
   item: any
 ) => {
+  console.log(item.length);
   return res.status(statusCode).json({
     status: status,
     message: message,

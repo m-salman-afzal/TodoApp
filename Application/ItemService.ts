@@ -126,10 +126,7 @@ class ItemService {
   readAllItem = async (req: express.Request) => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
-
     itemAPI.setUserId(req.session.user.userId);
-
-    console.log(req.query.limit);
 
     const pagination = new Pagination(
       req.query.limit ? +req.query.limit : 2,
@@ -143,13 +140,12 @@ class ItemService {
     );
 
     // * Utilize Entity
-    // const itemDB = allItems.map((el) => {
-    //   return ItemEntity.fromDB(el);
-    // });
+    const itemDB = allItems.data.map((el) => {
+      return ItemEntity.fromDB(el);
+    });
 
-    // return itemDB;
     console.log(allItems);
-    return allItems;
+    return itemDB;
   };
 }
 export default new ItemService();
