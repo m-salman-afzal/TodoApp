@@ -1,13 +1,6 @@
 import { ItemEntity } from '../../Domain/ItemEntity';
 import { Item } from '../Models/Associations';
-
-interface itemRepository_I<inputType, outputType> {
-  createItem(item: inputType): Promise<outputType>;
-  readItem(itemId: string, userId: string): Promise<outputType>;
-  updateItem(item: inputType, itemId: string, userId: string): Promise<any>;
-  deleteItem(itemId: string, userId: string): Promise<any>;
-  readAllItem(userId: string): Promise<any>;
-}
+import { itemRepository_I } from '../../interfaces';
 
 class ItemRepository implements itemRepository_I<ItemEntity, Item> {
   createItem = async (item: ItemEntity): Promise<Item> => {
