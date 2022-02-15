@@ -5,6 +5,9 @@ import express from 'express';
 // * Error Handlers
 import { AppError } from '../Utils/AppError';
 
+// * Utils
+import Pagination from '../Utils/Pagination';
+
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
 import UserRepository from '../Infrastructure/Repositories/UserRepository';
@@ -120,14 +123,20 @@ class UserService {
     const userAPI = UserEntity.fromAPI(req);
     userAPI.setUserId(req.params.id);
 
+    const pagination = new Pagination(
+      req.query.limit ? +req.query.limit : 2,
+      req.query.page ? +req.query.page : 1
+    );
+
     // * Utilize Repository
-    const allUsers = await UserRepository.readAllUser();
+    const allUsers = await UserRepository.readAllUser(pagination);
 
     // * Utilize Entity
-    const userDB = allUsers.map((el) => {
+    const userDB = allUsers.data.map((el) => {
       return UserEntity.fromDB(el);
     });
 
+    console.log(allUsers);
     return userDB;
   };
 }

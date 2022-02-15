@@ -1,6 +1,8 @@
 import { UserEntity } from '../../Domain/UserEntity';
 import { User } from '../Models/Associations';
 import { userRepository_I } from '../../interfaces';
+import Pagination from '../../Utils/Pagination';
+import PaginationInfo from '../../Utils/PaginationInfo';
 
 class UserRepository implements userRepository_I<UserEntity, User> {
   createUser = async (user: UserEntity): Promise<User> => {
@@ -34,8 +36,19 @@ class UserRepository implements userRepository_I<UserEntity, User> {
     });
   };
 
-  readAllUser = async (): Promise<User[]> => {
-    return User.findAll();
+  readAllUser = async (pagination: Pagination) => {
+    const users = await User.findAndCountAll({
+      limit: pagination.limit(),
+      offset: pagination.offset(),
+    });
+    const paginationInfo = new PaginationInfo<User>(
+      pagination.limit(),
+      pagination.pageNo(),
+      users.count,
+      users.rows
+    );
+
+    return paginationInfo.getPaginationInfo();
   };
 }
 
