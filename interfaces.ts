@@ -17,8 +17,10 @@ interface config_I {
 }
 
 interface pagination_I {
-  limit();
+  limit(): number;
+  pageNo(): number;
   offset(): number;
+  end(): number;
 }
 
 interface itemFromDb_I {

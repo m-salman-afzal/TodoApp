@@ -2,6 +2,7 @@ import { ItemEntity } from '../../Domain/ItemEntity';
 import { Item } from '../Models/Associations';
 import { itemRepository_I } from '../../interfaces';
 import Pagination from '../../Utils/Pagination';
+import PaginationInfo from '../../Utils/PaginationInfo';
 
 class ItemRepository implements itemRepository_I<ItemEntity, Item> {
   createItem = async (item: ItemEntity): Promise<Item> => {
@@ -30,16 +31,20 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
     });
   };
 
-  readAllItem = async (
-    userId: string,
-    pagination: Pagination
-  ): Promise<Item[]> => {
-    console.log(pagination);
-    return Item.findAll({
-      where: { userId },
+  readAllItem = async (userId: string, pagination: Pagination) => {
+    const items = await Item.findAndCountAll({
       limit: pagination.limit(),
       offset: pagination.offset(),
+      where: { userId },
     });
+    const paginationInfo = new PaginationInfo<Item>(
+      pagination.limit(),
+      items.count,
+      pagination.pageNo(),
+      items.rows
+    );
+
+    return paginationInfo.getPaginationInfo();
   };
 }
 

@@ -123,37 +123,18 @@ class ItemService {
     return item;
   };
 
-  readAllItem = async (req: express.Request): Promise<ItemEntity[]> => {
-    // // const features = new M_ApiFeatures(Item, req).sort().paginate();
-    // // .filter();
-
-    // // const item = await features.query;
-    // // console.log(item);
-    // let fields = [];
-    // // const page = req.query.page * 1 || 1;
-    // // const limit = req.query.limit * 1 || 1;
-    // // const skip = (page - 1) * limit;
-    // if (req.query.fields) {
-    //   fields = (req.query.fields as string).split(',');
-    // } else {
-    //   fields = ['title', 'priority', 'description', 'dueDate'];
-    // }
-    // const offset = new Pagination(+req.query.limit, +req.query.page).skip();
-    // const allItems = await Item.findAll({
-    //   where: {
-    //     userId: req.session.user.userId,
-    //   },
-    //   order: [['itemId', 'ASC']],
-    //   offset: offset,
-    //   limit: +req.query.limit,
-    //   attributes: fields,
-    // });
+  readAllItem = async (req: express.Request) => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
-    // itemAPI.setItemId(req.params.id);
+
     itemAPI.setUserId(req.session.user.userId);
 
-    const pagination = new Pagination(+req.query.limit, +req.query.page);
+    console.log(req.query.limit);
+
+    const pagination = new Pagination(
+      req.query.limit ? +req.query.limit : 2,
+      req.query.page ? +req.query.page : 1
+    );
 
     // * Utilize Repository
     const allItems = await ItemRepository.readAllItem(
@@ -162,11 +143,13 @@ class ItemService {
     );
 
     // * Utilize Entity
-    const itemDB = allItems.map((el) => {
-      return ItemEntity.fromDB(el);
-    });
+    // const itemDB = allItems.map((el) => {
+    //   return ItemEntity.fromDB(el);
+    // });
 
-    return itemDB;
+    // return itemDB;
+    console.log(allItems);
+    return allItems;
   };
 }
 export default new ItemService();
