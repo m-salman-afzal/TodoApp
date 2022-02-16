@@ -1,13 +1,8 @@
 import { ItemEntity } from '../../Domain/ItemEntity';
 import { Item } from '../Models/Associations';
-
-interface itemRepository_I<inputType, outputType> {
-  createItem(item: inputType): Promise<outputType>;
-  readItem(itemId: string, userId: string): Promise<outputType>;
-  updateItem(item: inputType, itemId: string, userId: string): Promise<any>;
-  deleteItem(itemId: string, userId: string): Promise<any>;
-  readAllItem(userId: string): Promise<any>;
-}
+import { itemRepository_I } from '../../interfaces';
+import Pagination from '../../Utils/Pagination';
+import PaginationInfo from '../../Utils/PaginationInfo';
 
 class ItemRepository implements itemRepository_I<ItemEntity, Item> {
   createItem = async (item: ItemEntity): Promise<Item> => {
@@ -36,10 +31,20 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
     });
   };
 
-  readAllItem = async (userId: string): Promise<Item[]> => {
-    return Item.findAll({
+  readAllItem = async (userId: string, pagination: Pagination) => {
+    const items = await Item.findAndCountAll({
+      limit: pagination.limit(),
+      offset: pagination.offset(),
       where: { userId },
     });
+    const paginationInfo = new PaginationInfo<Item>(
+      pagination.limit(),
+      pagination.pageNo(),
+      items.count,
+      items.rows
+    );
+
+    return paginationInfo.getPaginationInfo();
   };
 }
 

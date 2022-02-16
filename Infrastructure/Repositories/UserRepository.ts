@@ -1,30 +1,10 @@
 import { UserEntity } from '../../Domain/UserEntity';
 import { User } from '../Models/Associations';
-
-interface userRepository_I<inputType, outputType> {
-  createUser(user: inputType): Promise<outputType>;
-  readUser(userId: string, email: string): Promise<outputType>;
-  updateUser(user: inputType, userId: string): Promise<any>;
-  deleteUser(userId: string): Promise<any>;
-  readAllUser(): Promise<any>;
-}
+import { userRepository_I } from '../../interfaces';
+import Pagination from '../../Utils/Pagination';
+import PaginationInfo from '../../Utils/PaginationInfo';
 
 class UserRepository implements userRepository_I<UserEntity, User> {
-  // createUser(user: UserEntity): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
-  // readUser(userId: string, email: string): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
-  // updateUser(user: UserEntity, userId: string): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
-  // deleteUser(userId: string): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
-  // readAllUser(): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
   createUser = async (user: UserEntity): Promise<User> => {
     return User.create(user.fromObj());
   };
@@ -56,8 +36,19 @@ class UserRepository implements userRepository_I<UserEntity, User> {
     });
   };
 
-  readAllUser = async (): Promise<User[]> => {
-    return User.findAll();
+  readAllUser = async (pagination: Pagination) => {
+    const users = await User.findAndCountAll({
+      limit: pagination.limit(),
+      offset: pagination.offset(),
+    });
+    const paginationInfo = new PaginationInfo<User>(
+      pagination.limit(),
+      pagination.pageNo(),
+      users.count,
+      users.rows
+    );
+
+    return paginationInfo.getPaginationInfo();
   };
 }
 

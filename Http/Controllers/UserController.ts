@@ -1,26 +1,20 @@
 // * Packages
 import express from 'express';
-import { v1 as uuidv1 } from 'uuid';
 
 // * Error Handlers
-import { AppError } from '../../Utils/AppError';
 import { catchAsync } from '../../Utils/CatchAsync';
 
-// * Utils
-import { Pagination } from '../../Utils/Pagination';
-
 // * DDD
-import { UserEntity } from '../../Domain/UserEntity';
-import UserRepository from '../../Infrastructure/Repositories/UserRepository';
+import UserService from '../../Application/UserService';
 
 // * Define a common response for all request methods
 const response = (
-  req,
-  res,
+  req: express.Request,
+  res: express.Response,
   statusCode: number,
   status: string,
   message: string,
-  item
+  item: any
 ) => {
   return res.status(statusCode).json({
     status: status,
@@ -39,18 +33,11 @@ class UserController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // * Utilize Entity
-      const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(uuidv1());
-      userAPI.setPassword(req.body.password);
-      userAPI.setPasswordConfirm(req.body.passwordConfirm);
+      // * Utilize Service
+      const user = await UserService.createUser(req);
 
-      // * Utilize Repository
-      const newUser = await UserRepository.createUser(userAPI);
-
-      const userDB = UserEntity.fromDB(newUser);
-
-      response(req, res, 201, 'Created', 'Success', userDB);
+      // * Send Response
+      response(req, res, 201, 'Created', 'Success', user);
     }
   );
 
@@ -60,25 +47,11 @@ class UserController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // * Utilize Entity
-      const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(req.params.id);
+      // * Utilize Service
+      const user = await UserService.readUser(req, next);
 
-      // * Utilize Repository
-      const user = await UserRepository.readUser(userAPI.userId);
-
-      // * If no item found with id
-      if (!user)
-        return next(
-          new AppError(
-            `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-            404
-          )
-        );
-
-      const userDB = UserEntity.fromDB(user);
-
-      response(req, res, 200, 'Ok', 'Success', userDB);
+      // * Send Response
+      response(req, res, 200, 'Ok', 'Success', user);
     }
   );
 
@@ -88,29 +61,11 @@ class UserController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // * Utilize Entity
-      const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(req.params.id);
+      // * Utilize Service
+      const user = await UserService.updateUser(req, next);
 
-      // * Utilize Repository
-      const isUpdated = await UserRepository.updateUser(
-        userAPI,
-        userAPI.userId
-      );
-
-      // * If no item found with id
-      if (isUpdated[0] === 0)
-        return next(
-          new AppError(
-            `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-            404
-          )
-        );
-
-      const user = await UserRepository.readUser(userAPI.userId);
-      const userDB = UserEntity.fromDB(user);
-
-      response(req, res, 200, 'Ok', 'Success', userDB);
+      // * Send Response
+      response(req, res, 200, 'Ok', 'Success', user);
     }
   );
 
@@ -120,22 +75,10 @@ class UserController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // * Utilize Entity
-      const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(req.params.id);
+      // * Utilize Service
+      const user = await UserService.deleteUser(req, next);
 
-      // * Utilize Repository
-      const user = await UserRepository.deleteUser(userAPI.userId);
-
-      // * If no item found with id
-      if (!user)
-        return next(
-          new AppError(
-            `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-            404
-          )
-        );
-
+      // * Send Response
       response(req, res, 204, 'No Content', 'Success', user);
     }
   );
@@ -146,18 +89,11 @@ class UserController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      // * Utilize Entity
-      const userAPI = UserEntity.fromAPI(req);
-      userAPI.setUserId(req.params.id);
+      // * Utilize Service
+      const user = await UserService.readAllUser(req);
 
-      // * Utilize Repository
-      const allUsers = await UserRepository.readAllUser();
-
-      const userDB = allUsers.map((el) => {
-        return UserEntity.fromDB(el);
-      });
-
-      response(req, res, 200, 'Ok', 'Success', userDB);
+      // * Send Response
+      response(req, res, 200, 'Ok', 'Success', user);
     }
   );
 }

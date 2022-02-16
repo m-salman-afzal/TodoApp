@@ -27,12 +27,12 @@ router
   .route('/:id')
   .get(
     authentication.protect,
-    authorization.restricTo('admin'),
+    authorization.restricTo('admin', 'user'),
     userController.readUser
   )
   .patch(
     authentication.protect,
-    authorization.restricTo('admin'),
+    authorization.restricTo('admin', 'user'),
     userController.updateUser
   )
   .delete(

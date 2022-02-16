@@ -1,17 +1,27 @@
 import { pagination_I } from '../interfaces';
 
 class Pagination implements pagination_I {
-  private perPage: number = 3;
-  private page: number = 1;
+  private perPage: number;
+  private page: number;
 
   constructor(perPage: number, page: number) {
     this.perPage = perPage;
     this.page = page;
   }
 
-  skip(): number {
+  // * getter for perPage
+  limit(): number {
+    return this.perPage;
+  }
+
+  // * getter for page
+  pageNo(): number {
+    return this.page;
+  }
+
+  offset(): number {
     return (this.page - 1) * this.perPage;
   }
 }
 
-export { Pagination };
+export default Pagination;
