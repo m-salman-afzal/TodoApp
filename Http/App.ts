@@ -16,13 +16,13 @@ app.set('views', './views');
 app.use(express.static('./public'));
 
 // * Init cookie based session
-app.use(
-  cookieSession({
-    name: 'test123',
-    secret: 'many is so coool',
-    maxAge: 1000 * 60 * 60,
-  })
-);
+// app.use(
+//   cookieSession({
+//     name: 'test123',
+//     secret: 'many is so coool',
+//     maxAge: 1000 * 60 * 60,
+//   })
+// );
 
 // * Use morgan package to get console log of requests and responses
 app.use(morgan('dev'));

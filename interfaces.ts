@@ -14,6 +14,9 @@ interface config_I {
   readonly DB_MYSQL_PASSWORD?: string;
   readonly DB_MYSQL_HOST?: string;
   readonly DB_MYSQL_DIALECT?: sequelize.Dialect;
+  readonly JWT_SECRET: string;
+  readonly JWT_EXPIRES_IN: any;
+  readonly JWT_COOKIE_EXPIRES_IN: number;
 }
 
 interface pagination_I {

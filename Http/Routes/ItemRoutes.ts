@@ -14,8 +14,8 @@ router
 // * Router Methods for specific ids
 router
   .route('/:id')
-  .get(itemController.readItem)
-  .patch(itemController.updateItem)
+  .get(authentication.protect, itemController.readItem)
+  .patch(authentication.protect, itemController.updateItem)
   .delete(
     authentication.protect,
     authorization.restricTo('admin', 'user'),

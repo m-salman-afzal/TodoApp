@@ -48,11 +48,9 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      return next(
-        new AppError(
-          `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     // * Utilize Entity
@@ -80,11 +78,9 @@ class UserService {
 
     // * If no item found with id
     if (isUpdated[0] === 0)
-      return next(
-        new AppError(
-          `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     const user = await UserRepository.readUser(userAPI.userId);
@@ -108,11 +104,9 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      return next(
-        new AppError(
-          `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     return user;
@@ -136,7 +130,6 @@ class UserService {
       return UserEntity.fromDB(el);
     });
 
-    console.log(allUsers);
     return userDB;
   };
 }

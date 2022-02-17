@@ -5,8 +5,10 @@ import express from 'express';
 import { catchAsync } from '../../Utils/CatchAsync';
 
 // * DDD
-import UserService from '../../Application/UserService';
 import AuthService from '../../Application/AuthService';
+
+// * Others
+import { config } from '../../config';
 
 // * Define a common response for all request methods
 const response = (
@@ -15,7 +17,7 @@ const response = (
   statusCode: number,
   status: string,
   message: string,
-  item: any
+  item
 ) => {
   return res.status(statusCode).json({
     status: status,
@@ -35,7 +37,14 @@ class AuthController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const user = await UserService.createUser(req);
+      const user = await AuthService.signUp(req, res, next);
+      res.cookie('jwt', user.token, {
+        expires: new Date(
+          Date.now() + config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        // secure: true,
+        httpOnly: true,
+      });
 
       response(req, res, 201, 'Created', 'Success', user);
     }
@@ -47,8 +56,17 @@ class AuthController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const user = await AuthService.logIn(req, next);
-      response(req, res, 200, 'Ok', 'Success', user);
+      const user: any = await AuthService.logIn(req, res, next);
+
+      res.cookie('jwt', user.token, {
+        expires: new Date(
+          Date.now() + config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        // secure: true,
+        httpOnly: true,
+      });
+
+      response(req, res, 200, 'Ok', 'Success', user.userDB);
     }
   );
 }

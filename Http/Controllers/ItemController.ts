@@ -36,7 +36,7 @@ class ItemController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const item = await ItemService.createItem(req);
+      const item = await ItemService.createItem(req, res);
 
       // * Send Response
       response(req, res, 201, 'Created', 'Success', item);

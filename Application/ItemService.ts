@@ -13,7 +13,7 @@ import { ItemEntity } from '../Domain/ItemEntity';
 import ItemRepository from '../Infrastructure/Repositories/ItemRepository';
 
 class ItemService {
-  createItem = async (req: express.Request): Promise<ItemEntity> => {
+  createItem = async (req: express.Request, res): Promise<ItemEntity> => {
     // * Utilize Entity
     // TODO Quesion linked to ItemEntity.js
     // const item = ItemEntity.fromAPI(
@@ -26,7 +26,7 @@ class ItemService {
 
     const itemAPI = ItemEntity.fromAPI(req);
     itemAPI.setItemId(uuidv1());
-    itemAPI.setUserId(req.session.user.userId);
+    itemAPI.setUserId(res.locals.user.userId);
 
     // * Utilize Repository
     const newItem = await ItemRepository.createItem(itemAPI);
@@ -51,11 +51,9 @@ class ItemService {
 
     // * If no item found with id
     if (!item)
-      return next(
-        new AppError(
-          `Item with itemId: ${req.params.id} for user with userId: ${req.session.user.userId} with cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `Item with itemId: ${req.params.id} for user with userId: ${req.session.user.userId} with cannot be found. Check Id again in URL`,
+        404
       );
 
     // * Utilize Entity
@@ -83,11 +81,9 @@ class ItemService {
 
     // * If no item found with id
     if (isUpdated[0] === 0)
-      return next(
-        new AppError(
-          `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     // * Utilize Entity
@@ -114,11 +110,9 @@ class ItemService {
 
     // * If no item found with id
     if (!item)
-      return next(
-        new AppError(
-          `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
     return item;
   };

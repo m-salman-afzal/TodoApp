@@ -4,10 +4,17 @@ import authController from '../Controllers/AuthController';
 import authentication from '../Middlewares/Authentication';
 import authorization from '../Middlewares/Authorization';
 import userController from '../Controllers/UserController';
-
+import PasswordEncrypt from '../Middlewares/PasswordEncrypt';
+import PasswordConfirm from '../Middlewares/PasswordConfirm';
 const router = express.Router();
 
-router.route('/signup').post(authController.signUp);
+router
+  .route('/signup')
+  .post(
+    PasswordConfirm.passConfirm,
+    PasswordEncrypt.passEncrypt,
+    authController.signUp
+  );
 router.route('/login').post(authController.logIn);
 
 router
