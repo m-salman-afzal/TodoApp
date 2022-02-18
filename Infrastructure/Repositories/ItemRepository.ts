@@ -37,6 +37,7 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
       offset: pagination.offset(),
       where: { userId },
     });
+
     const paginationInfo = new PaginationInfo<Item>(
       pagination.limit(),
       pagination.pageNo(),

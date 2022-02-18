@@ -5,7 +5,7 @@ import cookieSession from 'cookie-session';
 import { routeError } from './Controllers/ErrorController';
 import { router as itemRouter } from './Routes/ItemRoutes';
 import { router as userRouter } from './Routes/UserRoutes';
-import { AppError } from '../Utils/AppError';
+import * as AppError from '../Utils/BaseError';
 
 // * Init Express server
 const app: express.Application = express();
@@ -35,20 +35,18 @@ app.use(morgan('dev'));
 // });
 
 app.use(express.json());
-
+app.all('*', (req, res, next) => {
+  next(
+    new AppError.NotFound(
+      `Unable to find ${req.originalUrl} for the ${req.method} method`
+    )
+  );
+});
 // * Define main routes which are then extended with queries and Ids
 app.use('/todoApi/items', itemRouter);
 app.use('/todoApi/users', userRouter);
 
 // * Capture any and all routes or corresponding http methods that are not defined.
-app.all('*', (req, res, next) => {
-  next(
-    new AppError(
-      `Unable to find ${req.originalUrl} for the ${req.method} method`,
-      404
-    )
-  );
-});
 
 // * Global Error Handling Middleware
 app.use(routeError);

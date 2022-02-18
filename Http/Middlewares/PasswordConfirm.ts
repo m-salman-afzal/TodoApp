@@ -1,5 +1,5 @@
 import express from 'express';
-import { AppError } from '../../Utils/AppError';
+import * as AppError from '../../Utils/BaseError';
 class PasswordConfirm {
   passConfirm = async (
     req: express.Request,
@@ -7,9 +7,8 @@ class PasswordConfirm {
     next: express.NextFunction
   ): Promise<void> => {
     if (req.body.password !== req.body.passwordConfirm)
-      throw new AppError(
-        'Password and Password Confirm do not match! Kindly try again',
-        400
+      throw new AppError.BadRequest(
+        'Password and Password Confirm do not match! Kindly try again'
       );
 
     next();

@@ -2,7 +2,7 @@
 import express from 'express';
 
 // * Error Handlers
-import { AppError } from '../../Utils/AppError';
+import * as AppError from '../../Utils/BaseError';
 
 class Authorization {
   restricTo = (...roles: string[]) => {
@@ -12,10 +12,9 @@ class Authorization {
       next: express.NextFunction
     ) => {
       // * check if the user has correct role to perform operation
-      if (!roles.includes(req.session.user.role))
-        throw new AppError(
-          'Permission denied! Role not assigned for current operation',
-          403
+      if (!roles.includes(req.body.user.role))
+        throw new AppError.Forbidden(
+          'Permission denied! Role not assigned for current operation'
         );
 
       next();
