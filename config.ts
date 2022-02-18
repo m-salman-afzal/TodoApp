@@ -17,6 +17,9 @@ const config: config_I = {
   DB_MYSQL_PASSWORD: process.env.DB_MYSQL_PASSWORD,
   DB_MYSQL_HOST: process.env.DB_MYSQL_HOST,
   DB_MYSQL_DIALECT: process.env.DB_MYSQL_DIALECT as sequelize.Dialect,
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
+  JWT_COOKIE_EXPIRES_IN: +process.env.JWT_COOKIE_EXPIRES_IN,
 };
 
 export { config };

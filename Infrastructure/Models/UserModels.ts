@@ -19,7 +19,6 @@ import {
   NonAttribute,
 } from 'sequelize';
 
-// import bcrypt from 'bcrypt';
 import { Item } from './ItemModels';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
@@ -107,24 +106,5 @@ User.init(
     sequelize: sequel,
   }
 );
-
-// userSchema.beforeCreate(async (user) => {
-//   user.password = await bcrypt.hash(user.password, 12);
-//   user.passwordConfirm = undefined;
-// });
-
-// * Password check with DB for login
-// User.prototype.correctPassword = async (
-//   candidatePassword: string,
-//   userPassword: string
-// ) => {
-//   return await bcrypt.compare(candidatePassword, userPassword);
-// };
-
-// User.hasMany(Item, {
-//   sourceKey: 'userId',
-//   onDelete: 'CASCADE',
-// });
-// Item.belongsTo(User, { targetKey: 'userId' });
 
 export { User };

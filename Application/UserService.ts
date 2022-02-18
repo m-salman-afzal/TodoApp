@@ -29,10 +29,7 @@ class UserService {
     return userDB;
   };
 
-  readUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | UserEntity> => {
+  readUser = async (req: express.Request): Promise<void | UserEntity> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
 
@@ -40,7 +37,7 @@ class UserService {
     if (userAPI.role === 'admin') {
       userAPI.setUserId(req.params.id);
     } else {
-      userAPI.setUserId(req.session.user.userId);
+      userAPI.setUserId(req.body.user.userId);
     }
 
     // * Utilize Repository
@@ -48,11 +45,9 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      return next(
-        new AppError(
-          `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     // * Utilize Entity
@@ -61,10 +56,7 @@ class UserService {
     return userDB;
   };
 
-  updateUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | UserEntity> => {
+  updateUser = async (req: express.Request): Promise<void | UserEntity> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
 
@@ -72,7 +64,7 @@ class UserService {
     if (userAPI.role === 'admin') {
       userAPI.setUserId(req.params.id);
     } else {
-      userAPI.setUserId(req.session.user.userId);
+      userAPI.setUserId(req.body.user.userId);
     }
 
     // * Utilize Repository
@@ -80,11 +72,9 @@ class UserService {
 
     // * If no item found with id
     if (isUpdated[0] === 0)
-      return next(
-        new AppError(
-          `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     const user = await UserRepository.readUser(userAPI.userId);
@@ -95,10 +85,7 @@ class UserService {
     return userDB;
   };
 
-  deleteUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<number | void> => {
+  deleteUser = async (req: express.Request): Promise<number | void> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
     userAPI.setUserId(req.params.id);
@@ -108,11 +95,9 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      return next(
-        new AppError(
-          `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-          404
-        )
+      throw new AppError(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
+        404
       );
 
     return user;
@@ -136,7 +121,6 @@ class UserService {
       return UserEntity.fromDB(el);
     });
 
-    console.log(allUsers);
     return userDB;
   };
 }

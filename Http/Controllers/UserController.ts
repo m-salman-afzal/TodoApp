@@ -48,7 +48,7 @@ class UserController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const user = await UserService.readUser(req, next);
+      const user = await UserService.readUser(req);
 
       // * Send Response
       response(req, res, 200, 'Ok', 'Success', user);
@@ -62,7 +62,7 @@ class UserController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const user = await UserService.updateUser(req, next);
+      const user = await UserService.updateUser(req);
 
       // * Send Response
       response(req, res, 200, 'Ok', 'Success', user);
@@ -76,7 +76,7 @@ class UserController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const user = await UserService.deleteUser(req, next);
+      const user = await UserService.deleteUser(req);
 
       // * Send Response
       response(req, res, 204, 'No Content', 'Success', user);
