@@ -29,10 +29,7 @@ class UserService {
     return userDB;
   };
 
-  readUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | UserEntity> => {
+  readUser = async (req: express.Request): Promise<void | UserEntity> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
 
@@ -40,7 +37,7 @@ class UserService {
     if (userAPI.role === 'admin') {
       userAPI.setUserId(req.params.id);
     } else {
-      userAPI.setUserId(req.session.user.userId);
+      userAPI.setUserId(req.body.user.userId);
     }
 
     // * Utilize Repository
@@ -59,10 +56,7 @@ class UserService {
     return userDB;
   };
 
-  updateUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | UserEntity> => {
+  updateUser = async (req: express.Request): Promise<void | UserEntity> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
 
@@ -70,7 +64,7 @@ class UserService {
     if (userAPI.role === 'admin') {
       userAPI.setUserId(req.params.id);
     } else {
-      userAPI.setUserId(req.session.user.userId);
+      userAPI.setUserId(req.body.user.userId);
     }
 
     // * Utilize Repository
@@ -91,10 +85,7 @@ class UserService {
     return userDB;
   };
 
-  deleteUser = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<number | void> => {
+  deleteUser = async (req: express.Request): Promise<number | void> => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
     userAPI.setUserId(req.params.id);

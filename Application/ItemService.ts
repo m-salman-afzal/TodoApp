@@ -13,20 +13,12 @@ import { ItemEntity } from '../Domain/ItemEntity';
 import ItemRepository from '../Infrastructure/Repositories/ItemRepository';
 
 class ItemService {
-  createItem = async (req: express.Request, res): Promise<ItemEntity> => {
+  createItem = async (req: express.Request): Promise<ItemEntity> => {
     // * Utilize Entity
-    // TODO Quesion linked to ItemEntity.js
-    // const item = ItemEntity.fromAPI(
-    //   req.session.user.userId,
-    //   req.body.title,
-    //   req.body.priority,
-    //   req.body.description,
-    //   req.body.dueDate
-    // );
 
     const itemAPI = ItemEntity.fromAPI(req);
     itemAPI.setItemId(uuidv1());
-    itemAPI.setUserId(res.locals.user.userId);
+    itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
     const newItem = await ItemRepository.createItem(itemAPI);
@@ -37,14 +29,11 @@ class ItemService {
     return itemDB;
   };
 
-  readItem = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | ItemEntity> => {
+  readItem = async (req: express.Request): Promise<void | ItemEntity> => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
     itemAPI.setItemId(req.params.id);
-    itemAPI.setUserId(req.session.user.userId);
+    itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
     const item = await ItemRepository.readItem(itemAPI.itemId, itemAPI.userId);
@@ -62,14 +51,11 @@ class ItemService {
     return itemDB;
   };
 
-  updateItem = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<void | ItemEntity> => {
+  updateItem = async (req: express.Request): Promise<void | ItemEntity> => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
     itemAPI.setItemId(req.params.id);
-    itemAPI.setUserId(req.session.user.userId);
+    itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
     const isUpdated = await ItemRepository.updateItem(
@@ -77,7 +63,6 @@ class ItemService {
       itemAPI.itemId,
       itemAPI.userId
     );
-    console.log(isUpdated);
 
     // * If no item found with id
     if (isUpdated[0] === 0)
@@ -93,14 +78,11 @@ class ItemService {
     return itemDB;
   };
 
-  deleteItem = async (
-    req: express.Request,
-    next: express.NextFunction
-  ): Promise<number | void> => {
+  deleteItem = async (req: express.Request): Promise<number | void> => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
     itemAPI.setItemId(req.params.id);
-    itemAPI.setUserId(req.session.user.userId);
+    itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
     const item = await ItemRepository.deleteItem(
@@ -120,7 +102,7 @@ class ItemService {
   readAllItem = async (req: express.Request) => {
     // * Utilize Entity
     const itemAPI = ItemEntity.fromAPI(req);
-    itemAPI.setUserId(req.session.user.userId);
+    itemAPI.setUserId(req.body.user.userId);
 
     const pagination = new Pagination(
       req.query.limit ? +req.query.limit : 2,

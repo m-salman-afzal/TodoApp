@@ -30,20 +30,29 @@ class Authentication {
       if (!token) {
         throw new AppError('User is not Logged In! Kindly Login Again', 401);
       }
-
+      // TODO ask the following promise
+      // let decodedVal;
       // const tokenVerify = new Promise((resolve, reject) => {
       //   jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
       //     resolve(decoded);
       //     reject(err);
       //   });
-      // });
-      // let decodedVal;
-      // tokenVerify.then((value) => {
+      // }).then((value) => {
       //   decodedVal = value;
+      //   console.log('🥶🥶🥶', value);
+      //   console.log('👿👿👿', decodedVal);
       // });
+
+      // // tokenVerify.then((value) => {
+      // //   decodedVal = value;
+      // //   console.log('🥶🥶🥶', value);
+      // //   console.log('👿👿👿', decodedVal);
+      // // });
+      // console.log('😶‍🌫️😶‍🌫️😶‍🌫️', tokenVerify);
+      // const tokenVerify: any = jwt.verify(token, config.JWT_SECRET);
+      // console.log('🥶🥶🥶', tokenVerify.userId);
       let userId;
       jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
-        console.log(decoded.userId);
         userId = decoded.userId;
       });
 
@@ -55,7 +64,7 @@ class Authentication {
           'User with current session does not exist anymore! Kindly login again.',
           401
         );
-      res.locals.user = currentUser;
+      req.body.user = currentUser;
 
       next();
     }

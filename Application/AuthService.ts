@@ -21,11 +21,7 @@ class AuthService {
     });
   };
 
-  signUp = async (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
+  signUp = async (req: express.Request) => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
     userAPI.setUserId(uuidv1());
@@ -43,11 +39,7 @@ class AuthService {
     return { userDB, token };
   };
 
-  logIn = async (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
+  logIn = async (req: express.Request) => {
     // * Check if the user entered the email or password or not
     const { email, password } = req.body;
 

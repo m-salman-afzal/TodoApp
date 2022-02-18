@@ -37,7 +37,7 @@ class AuthController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const user = await AuthService.signUp(req, res, next);
+      const user = await AuthService.signUp(req);
       res.cookie('jwt', user.token, {
         expires: new Date(
           Date.now() + config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -56,7 +56,7 @@ class AuthController {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      const user: any = await AuthService.logIn(req, res, next);
+      const user: any = await AuthService.logIn(req);
 
       res.cookie('jwt', user.token, {
         expires: new Date(

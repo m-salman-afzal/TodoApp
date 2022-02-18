@@ -36,7 +36,7 @@ class ItemController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const item = await ItemService.createItem(req, res);
+      const item = await ItemService.createItem(req);
 
       // * Send Response
       response(req, res, 201, 'Created', 'Success', item);
@@ -50,7 +50,7 @@ class ItemController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const item = await ItemService.readItem(req, next);
+      const item = await ItemService.readItem(req);
 
       // * Send Response
       response(req, res, 200, 'Ok', 'Success', item);
@@ -64,7 +64,7 @@ class ItemController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const item = await ItemService.updateItem(req, next);
+      const item = await ItemService.updateItem(req);
 
       // * Send Response
       response(req, res, 200, 'Ok', 'Success', item);
@@ -78,7 +78,7 @@ class ItemController {
       next: express.NextFunction
     ) => {
       // * Utilize Service
-      const item = await ItemService.deleteItem(req, next);
+      const item = await ItemService.deleteItem(req);
 
       // * Send Response
       response(req, res, 204, 'No Content', 'Success', item);
