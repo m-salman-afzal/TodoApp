@@ -5,11 +5,12 @@ import { promisify } from 'util';
 
 // * Error Handlers
 import { catchAsync } from '../../Utils/CatchAsync';
-import { AppError } from '../../Utils/AppError';
+import * as AppError from '../../Utils/BaseError';
 
 // * Others
 import { User } from '../../Infrastructure/Models/Associations';
 import { config } from './../../config';
+import { Identifier } from 'sequelize/dist';
 
 class Authentication {
   protect = catchAsync(
@@ -18,7 +19,7 @@ class Authentication {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      let token;
+      let token: any;
       // * check if we get the session cookie which is still valid
       if (
         req.headers.authorization &&
@@ -28,7 +29,9 @@ class Authentication {
       }
 
       if (!token) {
-        throw new AppError('User is not Logged In! Kindly Login Again', 401);
+        throw new AppError.Unauthorized(
+          'User is not Logged In! Kindly Login Again'
+        );
       }
       // TODO ask the following promise
       // let decodedVal;
@@ -60,9 +63,8 @@ class Authentication {
       const currentUser = await User.findByPk(userId);
 
       if (!currentUser)
-        throw new AppError(
-          'User with current session does not exist anymore! Kindly login again.',
-          401
+        throw new AppError.Unauthorized(
+          'User with current session does not exist anymore! Kindly login again.'
         );
       req.body.user = currentUser;
 

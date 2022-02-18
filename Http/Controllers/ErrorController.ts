@@ -1,7 +1,6 @@
 const sendErrorDev = (err, res) => {
   console.error('ErrorDev 😨😨');
-  res.status(err.statusCode).json({
-    status: err.status,
+  res.status(err.httpCode).json({
     message: err.message,
     error: err,
     stack: err.stack,
@@ -9,8 +8,8 @@ const sendErrorDev = (err, res) => {
 };
 
 const routeError = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
+  err.httpCode = err.httpCode || 500;
+  err.name = err.name || 'error';
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   }

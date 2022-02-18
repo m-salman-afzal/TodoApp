@@ -3,7 +3,7 @@ import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
 
 // * Error Handlers
-import { AppError } from '../Utils/AppError';
+import * as AppError from '../Utils/BaseError';
 
 // * Utils
 import Pagination from '../Utils/Pagination';
@@ -45,9 +45,8 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      throw new AppError(
-        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.BadRequest(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
 
     // * Utilize Entity
@@ -72,9 +71,8 @@ class UserService {
 
     // * If no item found with id
     if (isUpdated[0] === 0)
-      throw new AppError(
-        `User with id: ${req.params.id} cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.BadRequest(
+        `User with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
 
     const user = await UserRepository.readUser(userAPI.userId);
@@ -95,15 +93,14 @@ class UserService {
 
     // * If no item found with id
     if (!user)
-      throw new AppError(
-        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.BadRequest(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
 
     return user;
   };
 
-  readAllUser = async (req: express.Request): Promise<UserEntity[]> => {
+  readAllUser = async (req: express.Request) => {
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
     userAPI.setUserId(req.params.id);
@@ -121,7 +118,7 @@ class UserService {
       return UserEntity.fromDB(el);
     });
 
-    return userDB;
+    return { userDB, allUsers };
   };
 }
 export default new UserService();

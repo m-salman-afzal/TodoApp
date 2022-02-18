@@ -41,6 +41,7 @@ class UserRepository implements userRepository_I<UserEntity, User> {
       limit: pagination.limit(),
       offset: pagination.offset(),
     });
+
     const paginationInfo = new PaginationInfo<User>(
       pagination.limit(),
       pagination.pageNo(),

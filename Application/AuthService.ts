@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // * Error Handlers
-import { AppError } from '../Utils/AppError';
+import * as AppError from '../Utils/BaseError';
 
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
@@ -44,7 +44,7 @@ class AuthService {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new AppError('Email or Password not entered!', 404);
+      throw new AppError.BadRequest('Email or Password not entered!');
     }
 
     // * Utilize Entity
@@ -55,7 +55,7 @@ class AuthService {
 
     // * Password check with DB for login
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new AppError('Email or Password is Wrong! Try Again.', 404);
+      throw new AppError.NotFound('Email or Password is Wrong! Try Again.');
     }
 
     // * Sign token and send it

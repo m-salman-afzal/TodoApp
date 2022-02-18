@@ -3,7 +3,7 @@ import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
 
 // * Error Handlers
-import { AppError } from '../Utils/AppError';
+import * as AppError from '../Utils/BaseError';
 
 // * Utils
 import Pagination from '../Utils/Pagination';
@@ -40,9 +40,8 @@ class ItemService {
 
     // * If no item found with id
     if (!item)
-      throw new AppError(
-        `Item with itemId: ${req.params.id} for user with userId: ${req.session.user.userId} with cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.BadRequest(
+        `Item with itemId: ${req.params.id} for user with userId: ${req.body.user.userId} with cannot be found. Check Id again in URL`
       );
 
     // * Utilize Entity
@@ -66,9 +65,8 @@ class ItemService {
 
     // * If no item found with id
     if (isUpdated[0] === 0)
-      throw new AppError(
-        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.NotFound(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
 
     // * Utilize Entity
@@ -92,9 +90,8 @@ class ItemService {
 
     // * If no item found with id
     if (!item)
-      throw new AppError(
-        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`,
-        404
+      throw new AppError.NotFound(
+        `Item with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
     return item;
   };
