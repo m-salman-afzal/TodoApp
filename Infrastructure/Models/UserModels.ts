@@ -1,4 +1,4 @@
-import { sequel } from '../../mysql_db';
+import { sequel } from '../Connections/mysql_db';
 import {
   Model,
   InferAttributes,
@@ -16,13 +16,10 @@ import {
   HasManyRemoveAssociationsMixin,
   CreationOptional,
   Association,
-  ModelDefined,
-  Optional,
-  Sequelize,
   NonAttribute,
 } from 'sequelize';
 
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import { Item } from './ItemModels';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
@@ -110,85 +107,6 @@ User.init(
     sequelize: sequel,
   }
 );
-// const userSchema = sequel.define('users', {
-//   userId: {
-//     type: Sequelize.CHAR,
-//     primaryKey: true,
-//     allowNull: false,
-//     unique: true,
-//   },
-//   name: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//     validate: {
-//       len: {
-//         args: [3, 20],
-//         msg: 'Name length must be between 8-50 characters',
-//       },
-//     },
-//   },
-//   userName: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//     unique: true,
-//     validate: {
-//       len: {
-//         args: [3, 20],
-//         msg: 'Username length must be between 8-20 characters',
-//       },
-//     },
-//   },
-//   role: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//     defaultValue: 'user',
-//     validate: {
-//       isIn: {
-//         args: [['admin', 'user']],
-//         msg: 'User can only be admin or user',
-//       },
-//     },
-//   },
-//   email: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//     validate: {
-//       isEmail: {
-//         msg: 'Provide a valid email.',
-//       },
-//     },
-//   },
-//   password: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//     validate: {
-//       len: {
-//         args: [8, 20],
-//         msg: 'Password must be between 8-20 characters',
-//       },
-//     },
-//   },
-
-//   passwordConfirm: {
-//     type: Sequelize.VIRTUAL,
-//     allowNull: false,
-//     validate: {
-//       isSame(el: string) {
-//         if (el !== this.password) throw new Error('Passwords are not same!');
-//       },
-//     },
-//   },
-
-//   // passwordChangedAt: {
-//   //   type: Sequelize.STRING,
-//   // },
-//   // passwordResetToken: {
-//   //   type: Sequelize.STRING,
-//   // },
-//   // passwordResetExpires: {
-//   //   type: Sequelize.STRING,
-//   // },
-// });
 
 // userSchema.beforeCreate(async (user) => {
 //   user.password = await bcrypt.hash(user.password, 12);

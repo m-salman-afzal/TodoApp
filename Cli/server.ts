@@ -1,7 +1,7 @@
 import sequelize from 'sequelize';
-import { config } from './config';
-import { app } from './Http/App';
-import { sequel } from './mysql_db';
+import { config } from '../config';
+import { app } from '../Http/App';
+import { sequel } from '../Infrastructure/Connections/mysql_db';
 
 sequel
   .sync()
