@@ -1,4 +1,4 @@
-import { userFromDb_I } from '../interfaces';
+import { userFromDb_I } from '../../interfaces';
 
 class UserEntity {
   public userId: string;

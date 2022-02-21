@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { config } from '../../config';
+import { config } from '../../../../config';
 
 const sequel: Sequelize = new Sequelize(
   config.DB_MYSQL_NAME,

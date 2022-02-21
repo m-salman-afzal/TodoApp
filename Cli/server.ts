@@ -1,7 +1,7 @@
 import sequelize from 'sequelize';
 import { config } from '../config';
 import { app } from '../Http/App';
-import { sequel } from '../Infrastructure/Connections/mysql_db';
+import { sequel } from '../App/Infrastructure/Database/Connections/mysql_db';
 process.on('uncaughtException', (error: Error) => {
   console.log('Uncaught Exception. Shutting Down...⏬⏬');
   console.log('🤡🤡Error Name: ', error.name, 'Error Message: ', error.message);

@@ -8,7 +8,7 @@ import { catchAsync } from '../../Utils/CatchAsync';
 import * as AppError from '../../Utils/BaseError';
 
 // * Others
-import { User } from '../../Infrastructure/Models/Associations';
+import { User } from '../../App/Infrastructure/Models/Associations';
 import { config } from './../../config';
 import { Identifier } from 'sequelize/dist';
 

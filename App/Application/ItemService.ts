@@ -3,14 +3,17 @@ import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
 
 // * Error Handlers
-import * as AppError from '../Utils/BaseError';
+import * as AppError from '../../Utils/BaseError';
 
 // * Utils
-import Pagination from '../Utils/Pagination';
+import Pagination from '../../Utils/Pagination';
 
 // * DDD
 import { ItemEntity } from '../Domain/ItemEntity';
-import ItemRepository from '../Infrastructure/Repositories/ItemRepository';
+import { itemContainer } from '../Infrastructure/Container/Inversify.config';
+import { IItemRepository } from '../Infrastructure/Repositories/IItemRepository';
+import { TYPES } from '../Infrastructure/Repositories/Types';
+import { Item } from '../Infrastructure/Models/Associations';
 
 class ItemService {
   createItem = async (req: express.Request): Promise<ItemEntity> => {
@@ -21,7 +24,11 @@ class ItemService {
     itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
-    const newItem = await ItemRepository.createItem(itemAPI);
+    // const newItem = await ItemRepository.createItem(itemAPI);
+    const itemContain = itemContainer.get<IItemRepository<ItemEntity, Item>>(
+      TYPES.IItemRepository
+    );
+    const newItem = await itemContain.createItem(itemAPI);
 
     // * Utilize Entity
     const itemDB = ItemEntity.fromDB(newItem);
@@ -36,7 +43,11 @@ class ItemService {
     itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
-    const item = await ItemRepository.readItem(itemAPI.itemId, itemAPI.userId);
+    // const item = await ItemRepository.readItem(itemAPI.itemId, itemAPI.userId);
+    const itemContain = itemContainer.get<IItemRepository<ItemEntity, Item>>(
+      TYPES.IItemRepository
+    );
+    const item = await itemContain.readItem(itemAPI.itemId, itemAPI.userId);
 
     // * If no item found with id
     if (!item)
@@ -57,7 +68,18 @@ class ItemService {
     itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
-    const isUpdated = await ItemRepository.updateItem(
+
+    // const isUpdated = await ItemRepository.updateItem(
+    //   itemAPI,
+    //   itemAPI.itemId,
+    //   itemAPI.userId
+    // );
+
+    const itemContain = itemContainer.get<IItemRepository<ItemEntity, Item>>(
+      TYPES.IItemRepository
+    );
+
+    const isUpdated = await itemContain.updateItem(
       itemAPI,
       itemAPI.itemId,
       itemAPI.userId
@@ -70,7 +92,10 @@ class ItemService {
       );
 
     // * Utilize Entity
-    const item = await ItemRepository.readItem(itemAPI.itemId, itemAPI.userId);
+    // const item = await ItemRepository.readItem(itemAPI.itemId, itemAPI.userId);
+
+    const item = await itemContain.readItem(itemAPI.itemId, itemAPI.userId);
+
     const itemDB = ItemEntity.fromDB(item);
 
     return itemDB;
@@ -83,10 +108,10 @@ class ItemService {
     itemAPI.setUserId(req.body.user.userId);
 
     // * Utilize Repository
-    const item = await ItemRepository.deleteItem(
-      itemAPI.itemId,
-      itemAPI.userId
+    const itemContain = itemContainer.get<IItemRepository<ItemEntity, Item>>(
+      TYPES.IItemRepository
     );
+    const item = await itemContain.deleteItem(itemAPI.itemId, itemAPI.userId);
 
     // * If no item found with id
     if (!item)
@@ -107,10 +132,10 @@ class ItemService {
     );
 
     // * Utilize Repository
-    const allItems = await ItemRepository.readAllItem(
-      itemAPI.userId,
-      pagination
+    const itemContain = itemContainer.get<IItemRepository<ItemEntity, Item>>(
+      TYPES.IItemRepository
     );
+    const allItems = await itemContain.readAllItem(itemAPI.userId, pagination);
 
     // * Utilize Entity
     const itemDB = allItems.data.map((el) => {

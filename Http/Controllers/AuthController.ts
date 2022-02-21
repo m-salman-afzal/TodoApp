@@ -5,7 +5,7 @@ import express from 'express';
 import { catchAsync } from '../../Utils/CatchAsync';
 
 // * DDD
-import AuthService from '../../Application/AuthService';
+import AuthService from '../../App/Application/AuthService';
 
 // * Others
 import { config } from '../../config';

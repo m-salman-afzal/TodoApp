@@ -1,4 +1,4 @@
-import { itemFromDb_I } from '../interfaces';
+import { itemFromDb_I } from '../../interfaces';
 
 class ItemEntity {
   public itemId: string;

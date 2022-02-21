@@ -5,7 +5,7 @@ import express from 'express';
 import { catchAsync } from '../../Utils/CatchAsync';
 
 // * DDD
-import UserService from '../../Application/UserService';
+import UserService from '../../App/Application/UserService';
 
 // * Define a common response for all request methods
 const response = (

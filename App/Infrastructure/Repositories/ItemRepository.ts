@@ -1,10 +1,18 @@
+// * Packages
+import { injectable, inject } from 'inversify';
+import 'reflect-metadata';
+
+// * Utils
+import Pagination from '../../../Utils/Pagination';
+import PaginationInfo from '../../../Utils/PaginationInfo';
+
+// * DDD
 import { ItemEntity } from '../../Domain/ItemEntity';
 import { Item } from '../Models/Associations';
-import { itemRepository_I } from '../../interfaces';
-import Pagination from '../../Utils/Pagination';
-import PaginationInfo from '../../Utils/PaginationInfo';
+import { IItemRepository } from './IItemRepository';
 
-class ItemRepository implements itemRepository_I<ItemEntity, Item> {
+@injectable()
+class ItemRepository implements IItemRepository<ItemEntity, Item> {
   createItem = async (item: ItemEntity): Promise<Item> => {
     return Item.create(item.fromObj());
   };
@@ -49,4 +57,4 @@ class ItemRepository implements itemRepository_I<ItemEntity, Item> {
   };
 }
 
-export default new ItemRepository();
+export { ItemRepository };
