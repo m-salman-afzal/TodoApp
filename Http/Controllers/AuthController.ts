@@ -23,7 +23,6 @@ const response = (
     status: status,
     message: message,
     results: item.length,
-    session: req.session,
     data: {
       items: item,
     },

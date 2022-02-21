@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 
 // * Error Handlers
 import * as AppError from '../Utils/BaseError';
+import { logger } from '../Logger/Logger';
 
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
@@ -43,10 +44,14 @@ class AuthService {
     // * Check if the user entered the email or password or not
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      throw new AppError.BadRequest('Email or Password not entered!');
-    }
-
+    // if (!email || !password) {
+    //   throw new AppError.BadRequest('Email or Password not entered!');
+    // }
+    // logger.log('logInfo');
+    logger.debug('');
+    logger.warn('warninfo');
+    logger.info('infoinfo');
+    logger.error('here');
     // * Utilize Entity
     const userAPI = UserEntity.fromAPI(req);
 
