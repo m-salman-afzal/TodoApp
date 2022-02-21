@@ -1,10 +1,18 @@
+// * Packages
+import { injectable, inject } from 'inversify';
+import 'reflect-metadata';
+
+// * Utils
+import Pagination from '../../../Utils/Pagination';
+import PaginationInfo from '../../../Utils/PaginationInfo';
+
+// * DDD
 import { UserEntity } from '../../Domain/UserEntity';
 import { User } from '../Models/Associations';
-import { userRepository_I } from '../../interfaces';
-import Pagination from '../../Utils/Pagination';
-import PaginationInfo from '../../Utils/PaginationInfo';
+import { IUserRepository } from './IUserRepository';
 
-class UserRepository implements userRepository_I<UserEntity, User> {
+@injectable()
+class UserRepository implements IUserRepository<UserEntity, User> {
   createUser = async (user: UserEntity): Promise<User> => {
     return User.create(user.fromObj());
   };
@@ -53,4 +61,4 @@ class UserRepository implements userRepository_I<UserEntity, User> {
   };
 }
 
-export default new UserRepository();
+export { UserRepository };

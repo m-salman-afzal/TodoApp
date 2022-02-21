@@ -5,15 +5,20 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // * Error Handlers
-import * as AppError from '../Utils/BaseError';
-import { logger } from '../Logger/Logger';
+import * as AppError from '../../Utils/BaseError';
+import { logger } from '../../Logger/Logger';
 
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
-import UserRepository from '../Infrastructure/Repositories/UserRepository';
+import { UserRepository } from '../Infrastructure/Repositories/UserRepository';
+
+import { userContainer } from '../Infrastructure/Container/Inversify.config';
+import { IUserRepository } from '../Infrastructure/Repositories/IUserRepository';
+import { User } from '../Infrastructure/Models/Associations';
+import { TYPES } from '../Infrastructure/Repositories/Types';
 
 // * Others
-import { config } from '../config';
+import { config } from '../../config';
 
 class AuthService {
   signToken = (userId: string) => {
@@ -30,7 +35,10 @@ class AuthService {
     userAPI.setPasswordConfirm(req.body.passwordConfirm);
 
     // * Utilize Repository
-    const newUser = await UserRepository.createUser(userAPI);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const newUser = await userContain.createUser(userAPI);
 
     // * Sign token and send it
     const token = this.signToken(newUser.userId);
@@ -56,7 +64,11 @@ class AuthService {
     const userAPI = UserEntity.fromAPI(req);
 
     // * check if the user has entered correct email and password
-    const user = await UserRepository.readUser(undefined, userAPI.email);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+
+    const user = await userContain.readUser(undefined, userAPI.email);
 
     // * Password check with DB for login
     if (!user || !(await bcrypt.compare(password, user.password))) {

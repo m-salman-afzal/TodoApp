@@ -1,0 +1,76 @@
+2022-02-21T14:07:52.356Z DEV error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../../../interfaces"' has no exported member 'userRepository_I'.
+
+[7m3[0m import { userRepository_I } from '../../../interfaces';
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../../../interfaces"' has no exported member 'userRepository_I'.
+
+[7m3[0m import { userRepository_I } from '../../../interfaces';
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/usr/lib/node_modules/ts-node/src/index.ts:828:12)
+    at reportTSError (/usr/lib/node_modules/ts-node/src/index.ts:832:19)
+    at getOutput (/usr/lib/node_modules/ts-node/src/index.ts:1022:36)
+    at Object.compile (/usr/lib/node_modules/ts-node/src/index.ts:1326:43)
+    at Module.m._compile (/usr/lib/node_modules/ts-node/src/index.ts:1458:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Object.require.extensions.<computed> [as .ts] (/usr/lib/node_modules/ts-node/src/index.ts:1462:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19)
+2022-02-21T14:08:00.262Z DEV error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../../../interfaces"' has no exported member 'userRepository_I'.
+
+[7m3[0m import { userRepository_I } from '../../../interfaces';
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../../../interfaces"' has no exported member 'userRepository_I'.
+
+[7m3[0m import { userRepository_I } from '../../../interfaces';
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (/usr/lib/node_modules/ts-node/src/index.ts:828:12)
+    at reportTSError (/usr/lib/node_modules/ts-node/src/index.ts:832:19)
+    at getOutput (/usr/lib/node_modules/ts-node/src/index.ts:1022:36)
+    at Object.compile (/usr/lib/node_modules/ts-node/src/index.ts:1326:43)
+    at Module.m._compile (/usr/lib/node_modules/ts-node/src/index.ts:1458:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Object.require.extensions.<computed> [as .ts] (/usr/lib/node_modules/ts-node/src/index.ts:1462:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19)
+2022-02-21T14:08:24.921Z DEV error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m7[0m:[93m33[0m - [91merror[0m[90m TS2552: [0mCannot find name 'userRepository_I'. Did you mean 'UserRepository'?
+
+[7m7[0m class UserRepository implements userRepository_I<UserEntity, User> {
+[7m [0m [91m                                ~~~~~~~~~~~~~~~~[0m
+
+  [96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m7[0m:[93m7[0m
+    [7m7[0m class UserRepository implements userRepository_I<UserEntity, User> {
+    [7m [0m [96m      ~~~~~~~~~~~~~~[0m
+    'UserRepository' is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m7[0m:[93m33[0m - [91merror[0m[90m TS2552: [0mCannot find name 'userRepository_I'. Did you mean 'UserRepository'?
+
+[7m7[0m class UserRepository implements userRepository_I<UserEntity, User> {
+[7m [0m [91m                                ~~~~~~~~~~~~~~~~[0m
+
+  [96mApp/Infrastructure/Repositories/UserRepository.ts[0m:[93m7[0m:[93m7[0m
+    [7m7[0m class UserRepository implements userRepository_I<UserEntity, User> {
+    [7m [0m [96m      ~~~~~~~~~~~~~~[0m
+    'UserRepository' is declared here.
+
+    at createTSError (/usr/lib/node_modules/ts-node/src/index.ts:828:12)
+    at reportTSError (/usr/lib/node_modules/ts-node/src/index.ts:832:19)
+    at getOutput (/usr/lib/node_modules/ts-node/src/index.ts:1022:36)
+    at Object.compile (/usr/lib/node_modules/ts-node/src/index.ts:1326:43)
+    at Module.m._compile (/usr/lib/node_modules/ts-node/src/index.ts:1458:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Object.require.extensions.<computed> [as .ts] (/usr/lib/node_modules/ts-node/src/index.ts:1462:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19)

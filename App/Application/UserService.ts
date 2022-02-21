@@ -3,14 +3,17 @@ import { v1 as uuidv1 } from 'uuid';
 import express from 'express';
 
 // * Error Handlers
-import * as AppError from '../Utils/BaseError';
+import * as AppError from '../../Utils/BaseError';
 
 // * Utils
-import Pagination from '../Utils/Pagination';
+import Pagination from '../../Utils/Pagination';
 
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
-import UserRepository from '../Infrastructure/Repositories/UserRepository';
+import { TYPES } from '../Infrastructure/Repositories/Types';
+import { userContainer } from '../Infrastructure/Container/Inversify.config';
+import { IUserRepository } from '../Infrastructure/Repositories/IUserRepository';
+import { User } from '../Infrastructure/Models/Associations';
 
 class UserService {
   createUser = async (req: express.Request): Promise<UserEntity> => {
@@ -21,7 +24,12 @@ class UserService {
     userAPI.setPasswordConfirm(req.body.passwordConfirm);
 
     // * Utilize Repository
-    const newUser = await UserRepository.createUser(userAPI);
+    // const newUser = await UserRepository.createUser(userAPI);
+
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const newUser = await userContain.createUser(userAPI);
 
     // * Utilize Entity
     const userDB = UserEntity.fromDB(newUser);
@@ -41,7 +49,11 @@ class UserService {
     }
 
     // * Utilize Repository
-    const user = await UserRepository.readUser(userAPI.userId);
+    // const user = await UserRepository.readUser(userAPI.userId);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const user = await userContain.readUser(userAPI.userId);
 
     // * If no item found with id
     if (!user)
@@ -67,7 +79,10 @@ class UserService {
     }
 
     // * Utilize Repository
-    const isUpdated = await UserRepository.updateUser(userAPI, userAPI.userId);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const isUpdated = await userContain.updateUser(userAPI, userAPI.userId);
 
     // * If no item found with id
     if (isUpdated[0] === 0)
@@ -75,7 +90,7 @@ class UserService {
         `User with id: ${req.params.id} cannot be found. Check Id again in URL`
       );
 
-    const user = await UserRepository.readUser(userAPI.userId);
+    const user = await userContain.readUser(userAPI.userId);
 
     // * Utilize Entity
     const userDB = UserEntity.fromDB(user);
@@ -89,7 +104,11 @@ class UserService {
     userAPI.setUserId(req.params.id);
 
     // * Utilize Repository
-    const user = await UserRepository.deleteUser(userAPI.userId);
+    // const user = await UserRepository.deleteUser(userAPI.userId);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const user = await userContain.deleteUser(userAPI.userId);
 
     // * If no item found with id
     if (!user)
@@ -111,8 +130,11 @@ class UserService {
     );
 
     // * Utilize Repository
-    const allUsers = await UserRepository.readAllUser(pagination);
-
+    // const allUsers = await UserRepository.readAllUser(pagination);
+    const userContain = userContainer.get<IUserRepository<UserEntity, User>>(
+      TYPES.IUserRepository
+    );
+    const allUsers = await userContain.readAllUser(pagination);
     // * Utilize Entity
     const userDB = allUsers.data.map((el) => {
       return UserEntity.fromDB(el);
