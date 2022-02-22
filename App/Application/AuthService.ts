@@ -10,7 +10,6 @@ import { logger } from '../../Logger/Logger';
 
 // * DDD
 import { UserEntity } from '../Domain/UserEntity';
-import { UserRepository } from '../Infrastructure/Repositories/UserRepository';
 
 import { userContainer } from '../Infrastructure/Container/Inversify.config';
 import { IUserRepository } from '../Infrastructure/Repositories/IUserRepository';
@@ -52,10 +51,10 @@ class AuthService {
     // * Check if the user entered the email or password or not
     const { email, password } = req.body;
 
-    // if (!email || !password) {
-    //   throw new AppError.BadRequest('Email or Password not entered!');
-    // }
-    // logger.log('logInfo');
+    if (!email || !password) {
+      throw new AppError.BadRequest('Email or Password not entered!');
+    }
+
     logger.debug('');
     logger.warn('warninfo');
     logger.info('infoinfo');
