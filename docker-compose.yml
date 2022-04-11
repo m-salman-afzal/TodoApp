@@ -1,0 +1,30 @@
+services:
+  node:
+    image: node:16.14.0
+    container_name: node-localhost
+    build: .
+    ports:
+     - "8081:8081"
+    links: 
+      - mysql:mysql-localhost
+    depends_on:
+      - mysql
+    expose: 
+      - 3000
+      
+  mysql:
+    image: mysql:latest
+    container_name: mysql-localhost
+    environment:
+      - MYSQL_ROOT_PASSWORD=////
+    ports:
+      - "3307:3306"
+    expose: 
+      - 3307
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: localhost-network
+      
